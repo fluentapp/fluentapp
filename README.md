@@ -1,4 +1,5 @@
-# Fluent Analtyics
+![Fluent Analytics](https://fluentapp.io/wp-content/uploads/2023/08/Artboard-17.png)
+#
 
 Fluent Analytics is a privacy aware, open-source, cookie free Alternative to Google Analytics. Unlike Google Analytics we don't sell your data, we don't make your website slower and we don't require any training to understand our metrics.
 
