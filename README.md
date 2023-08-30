@@ -1,16 +1,28 @@
 # Fluent Analtyics
 
-Fluent Analytics is like your privacy BFF for website stats, minus the cookies. Unlike Google Analytics, we’re not into selling your data or slowing down your site. And hey, you don’t need a PhD to get what our metrics are all about – they’re as easy as pie!
+Fluent Analytics is a privacy aware, open-source, cookie free Alternative to Google Analytics. Unlike Google Analytics we don't sell your data, we don't make your website slower and we don't require any training to understand our metrics.
 
-check out https://fluentapp.io
-
-## Installation
-To-do add installation steps
+Check out our website https://fluentapp.io for more information or sign-up for our cloud offer: https://app.fluentapp.io/register
 
 ## Support
 We use Github Issues for support requests
 
+## Technology
+Fluent Analytics is built using PHP as an application engine & MySQL as an RDBMS. The wep application is built using Laravel, whereas the API that tracks the pages views is built using Slim Framework.
+
+
+## Installation
+To-do add installation steps. This is a work in progress, this is a PHP Application, any LAMP Stack or equivilant should do the job to host the application on your own servers.
+
+## Documentation
+Our product documentation can be found on this [link](https://fluentapp.io/docs/welcome) 
+
 ## Roadmap
+Fluent Analytics is a work in progress and like any open-source application we have set a roadmap for the upcoming releases.
+- [ ] Support UTM Tags
+- [ ] Support Custom Events
+- [ ] Support Funnels
+- [ ] Support Page Speed Metrics
 
 ## Contributing
 All PRs are welcome. 
