@@ -19,7 +19,7 @@ class CurrentVisitorsService
     public function handle(array $filterData): int
     {
         try {
-            return Visitor::getVisitorsCountForPreviousSec(30, $filterData);
+            return Visitor::getVisitorsCountForPreviousSec(1800, $filterData); // last 30 min visitors
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }

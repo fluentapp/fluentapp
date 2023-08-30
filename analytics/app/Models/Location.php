@@ -35,7 +35,7 @@ class Location extends ModelsEvent
      * @param array $filters The filters for which to retrieve count
      * @return array The count of visitors by Location.
      */
-    public static function getLocationsVisitorsPrevSec(string $locationCategory = 'countries', int $sec = 30, array $filters): array
+    public static function getLocationsVisitorsPrevSec(string $locationCategory = 'countries', int $sec = 1800, array $filters): array
     {
         $secondsAgo = Carbon::now()->subSeconds($sec);
         $locations = self::selectRaw("COUNT(DISTINCT hash) as unique_visitors_per_location, " . self::MAPPED_FIELDS['locationFields'][$locationCategory] . " as " . $locationCategory)

@@ -34,7 +34,7 @@
                     <span class="p-inputgroup-addon"> https:// </span>
                     <InputText class="form-control" v-model="domain" />
                 </div>
-                <small id="emailHelp" class="form-text text-muted">
+                <small class="form-text text-muted">
                     Just the naked domain or subdomain without 'www'
                 </small>
             </div>
@@ -51,26 +51,7 @@
             </div>
         </div>
         <div v-else class="container">
-            <h3>Add JavaScript snippet</h3>
-            Paste this snippet in the head of your website.
-
-            <div class="my-5 card p-3 text-sm">
-                <a
-                    class="position-absolute end-0 pr-2"
-                    @click="copyContent"
-                    href="#"
-                    v-tooltip.top="'Copy'"
-                >
-                    <span class="pi pi-copy text-end"></span>
-                </a>
-                <p id="script-to-copy">
-                    &lt;script id="fluentanalytics-js" defer data-api="{{
-                        config.apiUrl
-                    }}" data-domain="{{ domain }}" src="{{
-                        baseURL(config.baseUrl)
-                    }}fluentanalytics.js'"&gt;&lt;/script&gt;
-                </p>
-            </div>
+            <Snippet :domain="domain" />
         </div>
         <template #footer>
             <Button
@@ -160,21 +141,6 @@ const prepareNewSite = () => {
 };
 const goToDashboard = () => {
     window.location.href = "/home/" + domain.value;
-};
-const copyContent = () => {
-    const source = document.getElementById("script-to-copy");
-    const range = document.createRange();
-    range.selectNode(source);
-
-    const selection = window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(range);
-
-    try {
-        document.execCommand("copy");
-    } catch (err) {
-        console.error("Unable to copy HTML: ", err);
-    }
 };
 </script>
 <style>

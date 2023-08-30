@@ -30,7 +30,7 @@ class Visit extends ModelsEvent
      * @param array $filters The filters for which to retrieve count
      * @return int The count of page visits for last $sec seconds.
      */
-    public static function getTotalPageViewsPrevSec(int $sec = 30, array $filters): int
+    public static function getTotalPageViewsPrevSec(int $sec = 1800, array $filters): int
     {
         $secondsAgo = Carbon::now()->subSeconds($sec);
         $pageViewsCount = self::join('pageviews', 'events.id', '=', 'pageviews.event_id');
@@ -65,7 +65,7 @@ class Visit extends ModelsEvent
      * @param array $filters The filters for which to retrieve count
      * @return int The count of total visits for last $sec seconds.
      */
-    public static function getTotalVisitsPrevSec(int $sec = 30, array $filters): int
+    public static function getTotalVisitsPrevSec(int $sec = 1800, array $filters): int
     {
         $secondsAgo = Carbon::now()->subSeconds($sec);
         $visitsCount = self::join('pageviews', 'events.id', '=', 'pageviews.event_id')
@@ -101,7 +101,7 @@ class Visit extends ModelsEvent
      * @param array $filters The filters for which to retrieve count
      * @return int The average views per visit for last $sec seconds.
      */
-    public static function getAverageViewsPerVisitsPrevSec(int $sec = 30, array $filters): int
+    public static function getAverageViewsPerVisitsPrevSec(int $sec = 1800, array $filters): int
     {
         $secondsAgo = Carbon::now()->subSeconds($sec);
         $averageViewsPerVisits = self::join('pageviews', 'events.id', '=', 'pageviews.event_id')
@@ -136,7 +136,7 @@ class Visit extends ModelsEvent
      * @param array $filters The filters for which to retrieve count
      * @return int The average visits duration for last $sec seconds.
      */
-    public static function getAverageVisitsDurationPrevSec(int $sec = 30, array $filters): int
+    public static function getAverageVisitsDurationPrevSec(int $sec = 1800, array $filters): int
     {
         $secondsAgo = Carbon::now()->subSeconds($sec);
         $averageVisitsDuration = self::join('pageviews', 'events.id', '=', 'pageviews.event_id')
@@ -160,7 +160,13 @@ class Visit extends ModelsEvent
             ->where('events.updated_at', '>=', $fromDate)
             ->where('events.updated_at', '<=', $toDate);
         $averageBounceRate = self::appendQuery($averageBounceRate, $filters);
-        return $averageBounceRate->groupBy('events.id')->average('is_bounced') ?? 0;
+        $averageBounceRate = $averageBounceRate
+            ->select('events.id', 'events.is_bounced')
+            ->groupBy('events.id', 'events.is_bounced')
+            ->get();
+        $totalEvents = $averageBounceRate->count();
+        $totalBouncedEvents = $averageBounceRate->where('is_bounced', 1)->count();
+        return $totalEvents > 0 ? ($totalBouncedEvents / $totalEvents) : 0;
     }
     /**
      * Get the average bounce rate for last $sec seconds.
@@ -169,12 +175,18 @@ class Visit extends ModelsEvent
      * @param array $filters The filters for which to retrieve count
      * @return int The float bounce rate for last $sec seconds.
      */
-    public static function getAverageBounceRatePrevSec(int $sec = 30, array $filters): float
+    public static function getAverageBounceRatePrevSec(int $sec = 1800, array $filters): float
     {
         $secondsAgo = Carbon::now()->subSeconds($sec);
         $averageBounceRate = self::join('pageviews', 'events.id', '=', 'pageviews.event_id')
             ->where('events.updated_at', '>=', $secondsAgo);
         $averageBounceRate = self::appendQuery($averageBounceRate, $filters);
-        return $averageBounceRate->groupBy('events.id')->average('is_bounced') ?? 0;
+        $averageBounceRate = $averageBounceRate
+            ->select('events.id', 'events.is_bounced')
+            ->groupBy('events.id', 'events.is_bounced')
+            ->get();
+        $totalEvents = $averageBounceRate->count();
+        $totalBouncedEvents = $averageBounceRate->where('is_bounced', 1)->count();
+        return $totalEvents > 0 ? ($totalBouncedEvents / $totalEvents) : 0;
     }
 }

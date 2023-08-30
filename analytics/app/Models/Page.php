@@ -35,7 +35,7 @@ class Page extends ModelsEvent
      * @param array $filters The filters for which to retrieve count
      * @return array The count of visitors by Page.
      */
-    public static function getPagesVisitorsPrevSec(string $pageCategory = 'entry_page', int $sec = 30, array $filters): array
+    public static function getPagesVisitorsPrevSec(string $pageCategory = 'entry_page', int $sec = 1800, array $filters): array
     {
         $secondsAgo = Carbon::now()->subSeconds($sec);
         $pages = self::selectRaw("COUNT(DISTINCT hash) as unique_visitors_per_page, " . self::MAPPED_FIELDS['pageFields'][$pageCategory] . " as " . $pageCategory)
@@ -75,7 +75,7 @@ class Page extends ModelsEvent
      * @param array $filters The filters for which to retrieve count
      * @return array The count of visitors by Page.
      */
-    public static function getTopPagesVisitorsPrevSec(int $sec = 30, array $filters): array
+    public static function getTopPagesVisitorsPrevSec(int $sec = 1800, array $filters): array
     {
         $secondsAgo = Carbon::now()->subSeconds($sec);
         $pages = self::selectRaw("COUNT(DISTINCT hash) as unique_visitors_per_page, pageviews.page")

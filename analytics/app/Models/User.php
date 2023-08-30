@@ -49,6 +49,6 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function sites(): BelongsToMany
     {
-        return $this->belongsToMany(Site::class, 'users_sites')->withPivot('role');
+        return $this->belongsToMany(Site::class, 'users_sites')->where('sites.active', 1)->withPivot('role');
     }
 }

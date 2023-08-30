@@ -10,9 +10,7 @@ use App\Services\Widget\SourceService;
 use App\Services\Widget\MainStatService;
 use App\Services\Widget\VisitorService;
 
-use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 

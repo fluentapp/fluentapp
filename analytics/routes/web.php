@@ -45,6 +45,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{domain}/top-pages', [App\Http\Controllers\HomeController::class, 'topPages'])->name('top-pages');
         Route::get('/{domain}/entry-pages', [App\Http\Controllers\HomeController::class, 'entryPages'])->name('entry-pages');
         Route::get('/{domain}/exit-pages', [App\Http\Controllers\HomeController::class, 'exitPages'])->name('exit-pages');
+
+        Route::get('/manage-site/{domain}', [App\Http\Controllers\SiteController::class, 'show'])->name('manage-site');
+        Route::put('/sites/{domain}', [App\Http\Controllers\SiteController::class, 'update'])->name('sites');
+        Route::delete('/sites/{domain}', [App\Http\Controllers\SiteController::class, 'destroy'])->name('sites');
     });
 
     Route::get('timezones', function () {

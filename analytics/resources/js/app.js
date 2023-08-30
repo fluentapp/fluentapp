@@ -30,6 +30,8 @@ import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
 import DataView from 'primevue/dataview';
 import DataViewLayoutOptions from 'primevue/dataviewlayoutoptions'   // optional
+import ConfirmationService from 'primevue/confirmationservice';
+import ConfirmPopup from 'primevue/confirmpopup';
 import ToastService from 'primevue/toastservice';
 import Toast from 'primevue/toast';
 import Skeleton from 'primevue/skeleton';
@@ -57,6 +59,8 @@ import DevicesDetails from './components/Dashboard/DevicesDetails.vue';
 import SingleCompStat from './components/Dashboard/SingleCompStat.vue';
 import Loader from './components/Loader.vue';
 import NewSite from './components/Site/NewSite.vue';
+import Snippet from './components/Site/Snippet.vue';
+import SiteManagment from './components/Site/SiteManagment.vue';
 
 // pages
 app.component('site-dashboard', SiteDashbaord);
@@ -78,6 +82,8 @@ app.component('Devices', Devices);
 app.component('DevicesDetails', DevicesDetails);
 app.component('Loader', Loader);
 app.component('NewSite', NewSite);
+app.component('Snippet', Snippet);
+app.component('SiteManagment', SiteManagment);
 
 
 // primevue components 
@@ -90,6 +96,7 @@ app.component('DataView', DataView);
 app.component('InputText', InputText);
 app.component('DataViewLayoutOptions', DataViewLayoutOptions);
 app.component('Toast', Toast);
+app.component('ConfirmPopup', ConfirmPopup);
 app.component('Skeleton', Skeleton);
 app.component('TabView', TabView);
 app.component('TabPanel', TabPanel);
@@ -99,6 +106,7 @@ app.component('Calendar', Calendar);
 
 app.directive('tooltip', Tooltip);
 app.use(ToastService);
+app.use(ConfirmationService);
 
 /**
  * The following block of code may be used to automatically register your

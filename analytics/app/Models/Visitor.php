@@ -90,7 +90,7 @@ class Visitor extends ModelsEvent
      * @param array $filters The filters for which to retrieve unique visitors
      * @return int The count of unique visitors for the seconds.
      */
-    public static function getVisitorsCountForPreviousSec(int $sec = 30, array $filters): int
+    public static function getVisitorsCountForPreviousSec(int $sec = 1800, array $filters): int
     {
         $secAgo = Carbon::now()->subSeconds($sec);
         $visitors = self::join('pageviews', 'events.id', '=', 'pageviews.event_id')

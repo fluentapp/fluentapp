@@ -36,7 +36,7 @@
                             <Button
                                 icon="pi pi-wrench"
                                 rounded
-                                @click="gotoSiteManage(slotProps.data.fqdn)"
+                                @click="gotoSiteManagment(slotProps.data.fqdn)"
                             ></Button>
                         </div>
                     </div>
@@ -81,5 +81,8 @@ const addNewSitePopup = () => {
 const closePopup = (refreshSites = false) => {
     showPopup.value = false;
     if (refreshSites) fetchSites();
+};
+const gotoSiteManagment = (dom) => {
+    window.location.href = "/manage-site/" + dom;
 };
 </script>

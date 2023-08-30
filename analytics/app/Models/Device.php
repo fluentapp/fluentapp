@@ -35,7 +35,7 @@ class Device extends ModelsEvent
      * @param array $filters The filters for which to retrieve count
      * @return array The count of visitors by Device.
      */
-    public static function getDevicesVisitorsPrevSec(string $deviceCategory = 'browsers', int $sec = 30, array $filters): array
+    public static function getDevicesVisitorsPrevSec(string $deviceCategory = 'browsers', int $sec = 1800, array $filters): array
     {
         $secondsAgo = Carbon::now()->subSeconds($sec);
         $devices = self::selectRaw("COUNT(DISTINCT hash) as unique_visitors_per_device, " . self::MAPPED_FIELDS['deviceFields'][$deviceCategory] . " as " . $deviceCategory)

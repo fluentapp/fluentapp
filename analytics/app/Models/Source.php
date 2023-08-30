@@ -38,7 +38,7 @@ class Source extends ModelsEvent
      * @param array $filters The filters for which to retrieve count
      * @return array The count of visitors by referrer.
      */
-    public static function getSourcesVisitorsPrevSec(int $sec = 30, array $filters): array
+    public static function getSourcesVisitorsPrevSec(int $sec = 1800, array $filters): array
     {
         $secondsAgo = Carbon::now()->subSeconds($sec);
         $sources = self::selectRaw("COUNT(DISTINCT hash) as unique_visitors_per_source, referrer")

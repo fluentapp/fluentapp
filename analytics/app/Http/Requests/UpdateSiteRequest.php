@@ -3,6 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Validation\Rule;
 
 class UpdateSiteRequest extends FormRequest
 {
@@ -11,7 +14,7 @@ class UpdateSiteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Auth::check();
     }
 
     /**
@@ -22,7 +25,19 @@ class UpdateSiteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'domain_name' => [
+                'required',
+                'unique:sites,fqdn',
+                function ($attribute, $value, $fail) {
+                    if (!filter_var($value, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
+                        $fail("The $attribute is not a valid domain.");
+                    }
+                },
+            ],
+            'timezone' => [
+                'required',
+                Rule::in(timezone_identifiers_list()),
+            ],
         ];
     }
 }

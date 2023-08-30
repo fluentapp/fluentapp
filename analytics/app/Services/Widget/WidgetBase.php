@@ -43,7 +43,7 @@ abstract class WidgetBase
                 return ['from_date' => Carbon::createFromFormat('Y-m-d H:i:s', $filters['to_date'], $siteTimezone), 'to_date' => Carbon::createFromFormat('Y-m-d H:i:s', $filters['to_date'], $siteTimezone)];
                 break;
             case 'real_time':
-                return ['mins' => 30, 'sec' => 30];
+                return ['mins' => 30, 'sec' => 1800];
                 break;
             default:
                 throw new Exception('Invalid Date Filter');
