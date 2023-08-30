@@ -94,9 +94,10 @@ class SiteController extends Controller
         //
         try {
             $site = Site::find($request->site_id);
-            $site->active = 0;
-            $site->save();
-            // $site->delete();
+            // $site->active = 0; // for a soft delete (deactivate site)
+            // $site->save();
+            $site->users()->detach();
+            $site->delete();
         } catch (Exception $e) {
             return response()->json(['error' => true, 'message' => $e->getMessage()], 400);
         }
