@@ -1,0 +1,38 @@
+// Fonts
+@import url('https://fonts.bunny.net/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import 'bootstrap/scss/bootstrap';
+
+
+.card-stat{
+    height: 30rem;
+}
+
+.site-title div {
+    text-align: center;
+    font-size: 30px;
+    font-weight: 300;
+    color: #222;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    display: grid;
+    grid-template-columns: 1fr max-content 1fr;
+    grid-template-rows: 27px 0;
+    grid-gap: 10px;
+    align-items: center;
+}
+
+.site-title div:after,
+.site-title div:before {
+    content: " ";
+    display: block;
+    border-bottom: 1px solid #316fff;
+    border-top: 1px solid #316fff;
+    height: 5px;
+    background-color: #f8f8f8;
+}

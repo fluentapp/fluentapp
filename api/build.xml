@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Fluent App APIs" default="build" basedir=".">
+
+    <!-- Define properties -->
+    <property name="export.dir" value="./build/"/>
+    <property name="export.mainDir" value="${export.dir}main"/>
+    <property name="zip.file.name" value="exported-repo.zip" />
+    <property name="zip.file.dir" value="${export.dir}${zip.file.name}"/>
+   
+
+    <!-- Define targets -->
+    <target name="git-export">
+        <exec command="git archive --format zip --output=${zip.file.dir} HEAD"/>
+    </target>
+
+     <target name="unzip-repo" depends="git-export">
+        <exec command="unzip -o ${zip.file.dir} -d ${export.mainDir}" />
+    </target>
+
+    <target name="remove-files" depends="unzip-repo">
+        <delete file="${export.mainDir}/LICENSE"/>
+        <delete file="${export.mainDir}/CHANGELOG.md"/>
+        <delete file="${export.mainDir}/README.md"/>
+        <delete file="${export.mainDir}/.gitattributes"/>
+        <delete file="${export.mainDir}/.gitignore"/>
+        <delete file="${export.mainDir}/config/env.example.php"/>
+        <delete file="${export.mainDir}/config/local.dev.php"/>
+        <delete file="${export.mainDir}/config/local.github.php"/>
+        <delete file="${export.mainDir}/config/local.prod.php"/>
+        <delete file="${export.mainDir}/config/local.scrutinizer.php"/>
+        <delete file="${export.mainDir}/Dockerfile"/>
+        <delete file="${export.mainDir}/docker-compose.yml"/>
+        <delete>
+            <fileset dir="${export.mainDir}">
+                <include name=".*" />
+            </fileset>
+        </delete>
+        <delete>
+            <fileset dir="${export.mainDir}">
+                <include name="php*" />
+            </fileset>
+        </delete>
+       <delete dir="${export.mainDir}/tests"/>
+       <delete dir="${export.mainDir}/docs"/>
+    </target>
+
+    <target name="composer-build" depends="remove-files">
+        <exec command="composer install --no-dev --optimize-autoloader" dir="${export.mainDir}"/>
+    </target>
+
+    <target name="create-zip" depends="composer-build">
+        <zip destfile="${export.mainDir}/../main.zip" basedir="${export.mainDir}/."/>
+    </target>
+    
+    <target name="clean-up" depends="create-zip">
+          <delete file="${export.dir}/${zip.file.name}"/>
+          <delete dir="${export.mainDir}" />
+    </target>
+
+    <target name="build" depends="clean-up">
+        <echo>Build completed!</echo>
+    </target>
+
+</project>

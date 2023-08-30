@@ -1,0 +1,59 @@
+<?php
+
+namespace App\Services\Widget;
+
+use App\Models\Location;
+use Exception;
+
+class LocationService extends WidgetBase
+{
+
+    protected const LOCATION_CATEGORIES = ['countries', 'cities', 'regions'];
+    /**
+     * Get the count of unique visitors based on the specified filter.
+     *
+     * @param array $filterDate The filter option for determining the date range.
+     * @return array An associative array containing the count of unique visitors for each date/hour/minute based on the filter.
+     *               The array keys represent the dates/hours/minutes, and the values represent the unique user count.
+     *
+     * @throws \Exception If an invalid filter option is provided.
+     */
+    public function handle(array $filterData): array
+    {
+        try {
+            $filterDate = $filterData['period'];
+            $method = $this->predefinedPeriodFilters[$filterDate] ?? null;
+
+            if ($method && method_exists($this, $method) && in_array($filterData['location_category'] ?? '', self::LOCATION_CATEGORIES)) {
+                return $this->$method($filterData);
+            } else
+                throw new Exception('Invalid Filter');
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    protected function handleDateRangeFilter(array $filterData): array
+    {
+        try {
+            $dates = $this->prepareDateFilter($filterData);
+            $locationCategory = $filterData['location_category'];
+            unset($filterData['location_category']);
+            return Location::getLocationsVisitorsByDateRange($locationCategory, $dates['from_date'], $dates['to_date'], $filterData);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    protected function handleRealTimeFilter(array $filterData): array
+    {
+        try {
+            $sec = $this->prepareDateFilter($filterData)['sec'];
+            $locationCategory = $filterData['location_category'];
+            unset($filterData['location_category']);
+            return Location::getLocationsVisitorsPrevSec($locationCategory, $sec, $filterData);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+}

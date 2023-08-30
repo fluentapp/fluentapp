@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Fluent Web App" default="build" basedir=".">
+
+    <!-- Define properties -->
+    <property name="export.dir" value="./build/"/>
+    <property name="export.mainDir" value="${export.dir}main"/>
+    <property name="zip.file.name" value="exported-repo.zip" />
+    <property name="zip.file.dir" value="${export.dir}${zip.file.name}"/>
+   
+
+    <!-- Define targets -->
+    <target name="git-export">
+        <exec command="git archive --format zip --output=${zip.file.dir} HEAD"/>
+    </target>
+
+     <target name="unzip-repo" depends="git-export">
+        <exec command="unzip -o ${zip.file.dir} -d ${export.mainDir}" />
+    </target>
+
+    <target name="remove-files" depends="unzip-repo">
+        <delete file="${export.mainDir}/README.md"/>
+        <delete file="${export.mainDir}/.gitattributes"/>
+        <delete file="${export.mainDir}/.gitignore"/>
+        <delete file="${export.mainDir}/phpunit.xml"/>
+        
+        <!-- Removing config file so that it won't override production-->
+        <delete file="${export.mainDir}/resources/js/config.json" />
+        
+        <move file="${export.mainDir}/resources/js/config.prod.json" tofile="${export.mainDir}/resources/js/config.json" overwrite="true"/>
+        
+        <delete>
+            <fileset dir="${export.mainDir}">
+                <include name=".*" />
+            </fileset>
+        </delete>
+       <delete dir="${export.mainDir}/tests"/>
+    </target>
+
+    <target name="composer-build" depends="remove-files">
+        <exec command="composer install --no-dev --optimize-autoloader" dir="${export.mainDir}"/>
+    </target>
+    
+    <target name="npm-install" depends="composer-build">
+        <exec command="npm install" dir="${export.mainDir}"/>
+    </target>
+    
+     <target name="npm-build" depends="npm-install">
+        <exec command="npm run build" dir="${export.mainDir}"/>
+    </target>
+
+    <target name="create-zip" depends="npm-build">
+        <zip destfile="${export.mainDir}/../main.zip" basedir="${export.mainDir}"/>
+    </target>
+    
+    <target name="clean-up" depends="create-zip">
+          <delete file="${export.dir}/${zip.file.name}"/>
+          <delete dir="${export.mainDir}" />
+    </target>
+
+    <target name="build" depends="clean-up">
+        <echo>Build completed!</echo>
+    </target>
+
+</project>

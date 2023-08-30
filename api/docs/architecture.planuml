@@ -1,0 +1,58 @@
+@startuml
+
+title Web Application Architecture
+header v22.5.19.0
+footer Page %page% of %lastpage%
+
+autonumber
+
+actor User
+participant FrontController
+participant SlimApp
+participant Router
+participant Action
+participant Service
+participant Repository
+database Database
+participant Renderer
+participant Emitter
+
+User -> FrontController: HTTP Request\n/hello
+activate FrontController
+FrontController -> SlimApp: Invoke run
+activate SlimApp
+SlimApp -> SlimApp: Create PSR-7\nRequest and\nResponse object
+SlimApp -> Router: Find matching\nroute handler
+activate Router
+Router -> Action: Dispatch\nto handler
+deactivate Router
+activate Action
+Action -> Service: Fetch and pass\nparameters
+activate Service
+Service -> Service: Input validation
+Service -> Repository: Invoke
+activate Repository
+Repository --> Repository : Build SQL query
+Repository -> Database: Query / execute
+activate Database
+Database --> Repository: Return records\nor new ID
+deactivate Database
+Repository -> Service: Query result
+deactivate Repository
+Service -> Service: Calculation,\nTransactions,\nMapping
+Service -> Action: Domain result
+deactivate Service
+Action -> Renderer: Pass Domain result
+activate Renderer
+Renderer-> Renderer: Render data\nto JSON\nor HTML
+Renderer-[#0000FF]> SlimApp: Response
+deactivate Renderer
+deactivate Action
+SlimApp-[#0000FF]> Emitter: Emit Response
+activate Emitter
+Emitter -[#0000FF]> User: HTTP Response (header, body)
+deactivate Emitter
+deactivate SlimApp
+deactivate FrontController
+
+@enduml
