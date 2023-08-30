@@ -126,8 +126,17 @@ class Visit extends ModelsEvent
         $averageVisitsDuration = self::join('pageviews', 'events.id', '=', 'pageviews.event_id')
             ->where('events.updated_at', '>=', $fromDate)
             ->where('events.updated_at', '<=', $toDate);
+
         $averageVisitsDuration = self::appendQuery($averageVisitsDuration, $filters);
-        return $averageVisitsDuration->groupBy('events.id')->average('duration') ?? 0;
+
+        $averageVisitsDuration = $averageVisitsDuration
+            ->select('events.id', 'events.duration')
+            ->groupBy('events.id')
+            ->get();
+
+        $totalEvents = $averageVisitsDuration->count();
+        $totalDuration = $averageVisitsDuration->sum('duration');
+        return $totalEvents > 0 ? ($totalDuration / $totalEvents) : 0;
     }
     /**
      * Get the average visits duration for last $sec seconds.
@@ -142,7 +151,15 @@ class Visit extends ModelsEvent
         $averageVisitsDuration = self::join('pageviews', 'events.id', '=', 'pageviews.event_id')
             ->where('events.updated_at', '>=', $secondsAgo);
         $averageVisitsDuration = self::appendQuery($averageVisitsDuration, $filters);
-        return $averageVisitsDuration->groupBy('events.id')->average('duration') ?? 0;
+
+        $averageVisitsDuration = $averageVisitsDuration
+            ->select('events.id', 'events.duration')
+            ->groupBy('events.id')
+            ->get();
+
+        $totalEvents = $averageVisitsDuration->count();
+        $totalDuration = $averageVisitsDuration->sum('duration');
+        return $totalEvents > 0 ? ($totalDuration / $totalEvents) : 0;
     }
 
 
