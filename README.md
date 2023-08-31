@@ -24,7 +24,6 @@ Fluent Analytics is a work in progress and like any open-source application we h
 - [ ] Support Custom Event
 - [ ] Support Goals & Conversions
 - [ ] Support Funnels
-- [ ] Support Page Speed Metrics
 
 ## Contributing
 All PRs are welcome. 
