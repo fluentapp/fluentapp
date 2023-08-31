@@ -24,10 +24,11 @@ class UpdateSiteRequest extends FormRequest
      */
     public function rules(): array
     {
+        $siteId = $this->input('site_id');
         return [
             'domain_name' => [
                 'required',
-                'unique:sites,fqdn',
+                Rule::unique('sites', 'fqdn')->ignore($siteId),
                 function ($attribute, $value, $fail) {
                     if (!filter_var($value, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
                         $fail("The $attribute is not a valid domain.");

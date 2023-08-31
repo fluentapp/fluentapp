@@ -89,6 +89,12 @@ const loadTimezones = () => {
         .get(baseURL(config.baseUrl, "timezones"))
         .then((response) => {
             timezones.value = response.data;
+            const matchingTimezone = timezones.value.find(
+                (tz) => tz.timezone === props.timezone
+            );
+            if (matchingTimezone) {
+                timezone.value = matchingTimezone;
+            }
         })
         .catch((error) => {
             console.log(error);
@@ -107,7 +113,7 @@ const editSite = () => {
                 toast.add({
                     severity: "info",
                     summary: "Info",
-                    detail: "Site added successfully",
+                    detail: "Site updated successfully",
                     life: 1500,
                 });
                 setTimeout(redirectToMainPage, 1500);
