@@ -17,6 +17,7 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     <!-- Scripts -->
+    <script id="fluentanalytics-js" defer data-api="https://api.fluentapp.io/" data-domain="app.fluentapp.io" src="https://app.fluentapp.io/fluentanalytics.js"></script>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 

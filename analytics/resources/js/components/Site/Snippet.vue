@@ -16,7 +16,7 @@
                 config.apiUrl
             }}" data-domain="{{ props.domain }}" src="{{
                 baseURL(config.baseUrl)
-            }}fluentanalytics.js'"&gt;&lt;/script&gt;
+            }}fluentanalytics.js"&gt;&lt;/script&gt;
         </p>
     </div>
 </template>
