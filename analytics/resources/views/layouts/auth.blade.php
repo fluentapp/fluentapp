@@ -38,7 +38,7 @@
         }
     </style>
     <!-- Scripts -->
-    <script id="fluentanalytics-js" defer data-api="https://api.fluentapp.io/" data-domain="app.fluentapp.io" src="https://app.fluentapp.io/fluentanalytics.js"></script>
+    <script id="fluentanalytics-js" defer data-api="{{ env('DATA_API_FOR_TRACKER') }}" data-domain="{{ env('DATA_DOMAIN_FOR_TRACKER') }}" src="{{ env('DATA_DOMAIN_FOR_TRACKER') }}"></script>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
