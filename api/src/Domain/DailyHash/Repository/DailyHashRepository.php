@@ -28,21 +28,4 @@ class DailyHashRepository
 
         return $row['hash'];
     }
-
-    /**
-     *
-     * Creates a new random hash and
-     * @return string
-     */
-    public function rotate(): string
-    {
-        $randomHash = $string = bin2hex(openssl_random_pseudo_bytes(12));
-
-        $this->queryFactory->newInsert('daily_hash', [
-                    'hash' => $randomHash
-                ])
-                ->execute();
-
-        return $this->hash;
-    }
 }
