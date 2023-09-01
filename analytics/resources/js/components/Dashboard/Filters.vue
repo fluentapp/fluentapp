@@ -57,6 +57,8 @@
                                 @click="loadOptions(tab.type, key)"
                                 @change="handleSelection(tab.type, key)"
                                 :loading="loadingStates[`${tab.type}_${key}`]"
+                                filter
+                                autoFilterFocus="true"
                             >
                             </MultiSelect>
                         </div>
