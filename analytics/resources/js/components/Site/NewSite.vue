@@ -44,7 +44,7 @@
                     v-model="timezone"
                     :options="timezones"
                     filter
-                    autoFilterFocus="true"
+                    autoFilterFocus
                     optionLabel="timezoneFormat"
                     placeholder="Select a Timezone"
                     class="w-full"

@@ -38,10 +38,10 @@
                                     class="link-dark link-underline-opacity-0 link-underline-opacity-75-hover"
                                     href="#"
                                     @click.prevent="
-                                        addFilter('sources', source.referrer)
+                                        addFilter('sources', source.sources)
                                     "
                                 >
-                                    {{ source.referrer ?? "Direct / None" }}
+                                    {{ source.sources ?? "Direct / None" }}
                                 </a>
                             </td>
                             <td class="text-end">

@@ -17,11 +17,9 @@ class Source extends ModelsEvent
      */
     public static function getSourcesVisitorsByDateRange(string $fromDate = '', string $toDate = '', array $filters): array
     {
-        $parsedFromDate = Carbon::parse($fromDate)->format('Y-m-d');
-        $parsedToDate   =  Carbon::parse($toDate)->format('Y-m-d');
-        $sources = self::selectRaw("COUNT(DISTINCT hash) as unique_visitors_per_source,referrer_domain as  referrer")
+        $sources = self::selectRaw("COUNT(DISTINCT hash) as unique_visitors_per_source, " . self::MAPPED_FIELDS['sourceFields']['sources'] . " as sources")
             ->join('pageviews', 'events.id', '=', 'pageviews.event_id')
-            ->groupBy('referrer_domain')
+            ->groupBy(self::MAPPED_FIELDS['sourceFields']['sources'])
             ->limit($filters['limit'] ?? 10)
             ->orderBy('unique_visitors_per_source', 'desc');
 
@@ -41,9 +39,9 @@ class Source extends ModelsEvent
     public static function getSourcesVisitorsPrevSec(int $sec = 1800, array $filters): array
     {
         $secondsAgo = Carbon::now()->subSeconds($sec);
-        $sources = self::selectRaw("COUNT(DISTINCT hash) as unique_visitors_per_source,referrer_domain as referrer")
+        $sources = self::selectRaw("COUNT(DISTINCT hash) as unique_visitors_per_source, " . self::MAPPED_FIELDS['sourceFields']['sources'] . " as sources")
             ->join('pageviews', 'events.id', '=', 'pageviews.event_id')
-            ->groupBy('referrer_domain')
+            ->groupBy(self::MAPPED_FIELDS['sourceFields']['sources'])
             ->orderBy('unique_visitors_per_source', 'desc');
 
         $sources =  $sources->where('events.updated_at', '>=', $secondsAgo);
