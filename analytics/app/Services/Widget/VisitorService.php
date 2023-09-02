@@ -75,7 +75,15 @@ class VisitorService extends WidgetBase
                 $time = Carbon::createFromTime($hour, 0, 0, $filterData['site_timezone']);
                 $dateLabels[] = $time->format('g A'); // Format the time ("1 AM", "2 PM")
                 // Check if the time is in the future compared to the current time
-                $chartData[] = !empty($visitors[$formattedHour]) ? $visitors[$formattedHour] : ($time->gt($currentTime) ? null : 0);
+                $chartData[] = !empty($visitors[$formattedHour])
+                    ? $visitors[$formattedHour]
+                    : (
+                        ($time->gt($currentTime) && $filterData['period'] == 'today')
+                        ||
+                        ($filterData['period'] == 'custom' && $filterData['date'] > $currentTime)
+                        ? null
+                        : 0
+                    );
             }
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
