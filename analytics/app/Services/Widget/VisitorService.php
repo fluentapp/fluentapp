@@ -69,11 +69,13 @@ class VisitorService extends WidgetBase
         try {
             $date = $this->prepareDateFilter($filterData);
             $visitors = Visitor::getVisitorsPerHourPerDate($date['from_date'], $date['to_date'], $filterData);
+            $currentTime = Carbon::now($filterData['site_timezone']);
             for ($hour = 0; $hour < 24; $hour++) {
                 $formattedHour = str_pad($hour, 2, '0', STR_PAD_LEFT);
-                $chartData[] = $visitors[$formattedHour] ?? 0;
-                $time = Carbon::createFromTime($hour, 0, 0); // Create a Carbon instance for the specific hour
+                $time = Carbon::createFromTime($hour, 0, 0, $filterData['site_timezone']);
                 $dateLabels[] = $time->format('g A'); // Format the time ("1 AM", "2 PM")
+                // Check if the time is in the future compared to the current time
+                $chartData[] = !empty($visitors[$formattedHour]) ? $visitors[$formattedHour] : ($time->gt($currentTime) ? null : 0);
             }
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
