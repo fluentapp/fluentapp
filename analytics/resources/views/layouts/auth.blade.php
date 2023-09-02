@@ -51,6 +51,9 @@
                 </div>
                 @yield('content')
             </div>
+            <div class="text-center text-xs p-3 mt-3">
+                Copyright ©{{date('Y')}} Fluent Analytics All Rights Reserved.
+            </div>
         </div>
     </div>
 </body>
