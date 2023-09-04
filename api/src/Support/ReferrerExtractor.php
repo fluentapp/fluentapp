@@ -54,6 +54,9 @@ final class ReferrerExtractor
         'dizionario.it.msn.com' => 'Bing',
         'cc.bingj.com' => 'Bing',
         'm.bing.com' => 'Bing',
+        //Twitter
+        't.co' => 'Twitter',
+        'twitter.com' => 'Twitter'
     ];
 
     /**
