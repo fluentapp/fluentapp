@@ -83,7 +83,7 @@ class Page extends ModelsEvent
             ->groupBy('pageviews.page')
             ->limit($filters['limit'] ?? 10)
             ->orderBy('unique_visitors_per_page', 'desc');
-        $pages = $pages->where('pageviews.updated_at', '>=', $secondsAgo);
+        $pages = $pages->where('pageviews.created_at', '>=', $secondsAgo);
         $pages = self::appendQuery($pages, $filters);
         $pages = $pages->get();
         return $pages->toArray();

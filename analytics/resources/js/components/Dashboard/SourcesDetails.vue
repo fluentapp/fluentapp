@@ -59,7 +59,7 @@ const sourcesList = ref([]);
 const sourceCategory = ref(Object.keys(sources)[0]);
 
 const columns = [
-    { field: "referrer", header: "Referrer" },
+    { field: "sources", header: "Referrer" },
     { field: "unique_visitors_per_source", header: "Visitors" },
     // { field: "unique_visitors_per_source", header: "Bounce Rate" },
     // { field: "unique_visitors_per_source", header: "Visit Duration" },

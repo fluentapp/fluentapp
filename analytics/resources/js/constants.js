@@ -63,7 +63,7 @@ export const sources = {
     sources: {
         name: 'Top Sources',
         url: 'sources',
-        field: 'referrer',
+        field: 'sources',
     },
 };
 export const pages = {

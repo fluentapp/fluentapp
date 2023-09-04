@@ -15,7 +15,7 @@ class Event extends Model
         'deviceFields' => ['os' => 'os', 'browsers' => 'browser', 'sizes' => 'device_type'],
         'locationFields' => ['countries' => 'country', 'cities' => 'city', 'regions' => 'state'],
         'pageFields' => ['entry_pages' => 'entry_page', 'exit_pages' => 'exit_page', 'page' => 'page'],
-        'sourceFields' => ['sources' => 'referrer'],
+        'sourceFields' => ['sources' => 'referrer_domain'],
     ];
 
 

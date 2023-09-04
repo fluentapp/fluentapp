@@ -38,7 +38,7 @@
         }
     </style>
     <!-- Scripts -->
-    <script id="fluentanalytics-js" defer data-api="{{ env('DATA_API_FOR_TRACKER') }}" data-domain="{{ env('DATA_DOMAIN_FOR_TRACKER') }}" src="{{ env('DATA_DOMAIN_FOR_TRACKER') }}"></script>
+    <script id="fluentanalytics-js" defer data-api="{{ env('DATA_API_FOR_TRACKER') }}" data-domain="{{ env('DATA_DOMAIN_FOR_TRACKER') }}" src="{{ env('SRC_JS_TRACKER') }}"></script>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
@@ -50,6 +50,9 @@
                     <img src="{{asset('images/logo.png')}}" class="img-fluid my-3" width="200px" alt="profile">
                 </div>
                 @yield('content')
+            </div>
+            <div class="text-center text-xs p-3 mt-3">
+                Copyright ©{{date('Y')}} Fluent Analytics All Rights Reserved.
             </div>
         </div>
     </div>

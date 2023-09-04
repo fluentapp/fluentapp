@@ -21,7 +21,7 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
@@ -76,10 +76,81 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-4 mb-5">
             @yield('content')
         </main>
     </div>
+    <!-- Footer -->
+    <footer class="mt-auto text-center1 text-lg-start text-white" style="background-color: #313d55">
+        <!-- Grid container -->
+        <div class="container p-4 pb-0">
+            <!-- Section: Links -->
+            <section class="">
+                <!--Grid row-->
+                <div class="row">
+                    <!-- Grid column -->
+                    <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                        <h6 class="text-uppercase mb-4 font-weight-bold">
+                            {{ config('app.name', 'Fluent Analytics') }}
+                        </h6>
+                        <p>
+                            Fluent Analytics is a privacy aware, open-source, cookie free website analytics tool. Unlike Google Analytics we don't sell your data, we don't make your website slower and we don't require any training to understand our metrics.
+                        </p>
+                    </div>
+                    <!-- Grid column -->
+
+                    <hr class="w-100 clearfix d-md-none" />
+
+                    <!-- Grid column -->
+                    <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+                        <h6 class="text-uppercase mb-4 font-weight-bold">Quick Links</h6>
+
+                        <p>
+                            <a href="https://fluentapp.io/blog/" class="text-white text-decoration-none">Blog</a>
+                        </p>
+                        <p>
+                            <a href="https: //fluentapp.io/contact-us/" class="text-white text-decoration-none">Contact Us</a>
+                        </p>
+                        <p>
+                            <a href="https://fluentapp.io/docs/welcome/" class="text-white text-decoration-none">Docs</a>
+                        </p>
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <hr class="w-100 clearfix d-md-none" />
+
+                    <!-- Grid column -->
+                    <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3 pb-5">
+                        <h6 class="text-uppercase mb-4 font-weight-bold">Contact</h6>
+                        <a class="text-decoration-none link-light" href="mailto:hello@fluentapp.io"><i class="pi pi-envelope mr-1 text-light"></i> hello@fluentapp.io</a>
+                    </div>
+                    <!-- Grid column -->
+
+                    <hr class="w-100 clearfix d-md-none" />
+
+                    <!-- Grid column -->
+                    <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+                        <h6 class="text-uppercase mb-4 font-weight-bold">Follow us</h6>
+                        <!-- Linkedin -->
+                        <a class="link-light btn" href="https://www.linkedin.com/company/fluent-analytics-app/" role="button"><i class="pi pi-linkedin text-1white"></i></a>
+                        <!-- Twitter -->
+                        <a class="link-light btn" href="#!" role="button"><i class="pi pi-twitter text-w1hite"></i></a>
+                    </div>
+                </div>
+                <!--Grid row-->
+            </section>
+            <!-- Section: Links -->
+        </div>
+        <!-- Grid container -->
+
+        <!-- Copyright -->
+        <div class="text-center text-xs p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+            Copyright ©{{date('Y')}} Fluent Analytics All Rights Reserved.
+        </div>
+        <!-- Copyright -->
+    </footer>
+    <!-- Footer -->
 </body>
 
 </html>

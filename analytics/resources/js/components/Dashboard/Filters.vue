@@ -57,6 +57,8 @@
                                 @click="loadOptions(tab.type, key)"
                                 @change="handleSelection(tab.type, key)"
                                 :loading="loadingStates[`${tab.type}_${key}`]"
+                                filter
+                                autoFilterFocus
                             >
                             </MultiSelect>
                         </div>
@@ -215,7 +217,6 @@ const renderFilters = () => {
                     (valueForKey) => ({ [key]: valueForKey })
                 );
                 selectedItems.value[tab.type][key] = valueForKey;
-                console.log(optionItems.value[tab.type][key]);
             }
         }
     }
