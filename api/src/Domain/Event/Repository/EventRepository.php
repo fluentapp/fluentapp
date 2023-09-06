@@ -32,6 +32,7 @@ class EventRepository
             'browser' => $data['browser'],
             'browser_version' => $data['browser_version'],
             'country' => $data['country'],
+            'country_code' => $data['country_code'],
             'city' => $data['city'],
             'state' => $data['state'],
             'created_at' => $data['created_at'],

@@ -17,7 +17,7 @@ class Location extends ModelsEvent
      */
     public static function getLocationsVisitorsByDateRange(string $locationCategory = 'countries', string $fromDate = '', string $toDate = '', array $filters): array
     {
-        $locations = self::selectRaw("COUNT(DISTINCT hash) as unique_visitors_per_location, " . self::MAPPED_FIELDS['locationFields'][$locationCategory] . " as " . $locationCategory)
+        $locations = self::selectRaw("COUNT(DISTINCT hash) as unique_visitors_per_location, country_code, " . self::MAPPED_FIELDS['locationFields'][$locationCategory] . " as " . $locationCategory)
             ->join('pageviews', 'events.id', '=', 'pageviews.event_id')
             ->groupBy(self::MAPPED_FIELDS['locationFields'][$locationCategory])
             ->limit($filters['limit'] ?? 10)
@@ -38,7 +38,7 @@ class Location extends ModelsEvent
     public static function getLocationsVisitorsPrevSec(string $locationCategory = 'countries', int $sec = 1800, array $filters): array
     {
         $secondsAgo = Carbon::now()->subSeconds($sec);
-        $locations = self::selectRaw("COUNT(DISTINCT hash) as unique_visitors_per_location, " . self::MAPPED_FIELDS['locationFields'][$locationCategory] . " as " . $locationCategory)
+        $locations = self::selectRaw("COUNT(DISTINCT hash) as unique_visitors_per_location, country_code, " . self::MAPPED_FIELDS['locationFields'][$locationCategory] . " as " . $locationCategory)
             ->join('pageviews', 'events.id', '=', 'pageviews.event_id')
             ->groupBy(self::MAPPED_FIELDS['locationFields'][$locationCategory])
             ->orderBy('unique_visitors_per_location', 'desc');
