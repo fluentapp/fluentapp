@@ -11,6 +11,8 @@ final class GeoIPData
 {
     public ?string $country = null;
 
+    public ?string $country_code = null;
+
     public ?string $state = null;
 
     public ?string $city = null;
@@ -28,6 +30,9 @@ final class GeoIPData
 
         $this->country = ($data['country'] !== '-') ?
                         $reader->findString('country') :
+                        null;
+        $this->country_code = ($data['country_code'] !== '-') ?
+                        $reader->findString('country_code') :
                         null;
         $this->state = ($data['state'] !== '-') ?
                         $reader->findString('state') :

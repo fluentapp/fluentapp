@@ -136,6 +136,7 @@ class EventCreator
     {
         $geoData = $this->geoIPFinder->getInfoByIp($data['remote_address']);
         $data['country'] = $geoData->country;
+        $data['country_code'] = $geoData->country_code;
         $data['city'] = $geoData->city;
         $data['state'] = $geoData->state;
         return $data;

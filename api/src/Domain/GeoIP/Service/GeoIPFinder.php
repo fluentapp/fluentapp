@@ -18,6 +18,7 @@ class GeoIPFinder
         $details = $this->getDetails($ipAddress);
         $geoData = new GeoIPData([
             'country' => $details->countryName,
+            'country_code' => $details->countryCode,
             'city' => $details->cityName,
             'state' => $details->regionName
         ]);

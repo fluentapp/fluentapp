@@ -1,4 +1,4 @@
 {
   "baseUrl": "https://app.fluentapp.io/",
-  "apiUrl": "https://api.fluentapp.io/"
+  "apiUrl": "https://api.fluentapp.io/event/"
 }

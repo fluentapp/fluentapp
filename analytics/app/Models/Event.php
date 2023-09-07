@@ -36,9 +36,20 @@ class Event extends Model
         foreach ($moreFilters as $filter) {
             $field = self::getValueForKey($filter->key ?? '');
             if (!empty($field)) {
-                $event = (isset($filter->operator) && $filter->operator == 'is_not')
-                    ? $event->whereNotIn($field, $filter->value ?? [])
-                    : $event->whereIn($field, $filter->value ?? []);
+                $values = $filter->value;
+                // Check if the value array contains null
+                if (in_array(null, $values, true)) {
+                    if (isset($filter->operator) && $filter->operator == 'is_not') {
+                        $event = $event->whereNotNull($field);
+                    } else {
+                        $event = $event->whereNull($field);
+                    }
+                } else {
+                    // Handle the case where the value is not null
+                    $event = (isset($filter->operator) && $filter->operator == 'is_not')
+                        ? $event->whereNotIn($field, $values ?? [])
+                        : $event->whereIn($field, $values ?? []);
+                }
             }
         }
         return $event;

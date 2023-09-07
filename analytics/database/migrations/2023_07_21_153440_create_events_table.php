@@ -53,6 +53,7 @@ return new class () extends Migration {
             $table->string('browser_version')->nullable();
             $table->string('resolution')->nullable();
             $table->string('country')->nullable();
+            $table->string('country_code')->nullable();
             $table->string('state')->nullable();
             $table->string('city')->nullable();
             $table->boolean('is_bounced')->nullable()->default(1);

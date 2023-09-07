@@ -8,6 +8,8 @@ import './bootstrap';
 import { createApp } from 'vue';
 import PrimeVue from 'primevue/config';
 import "primevue/resources/themes/bootstrap4-light-blue/theme.css";
+import "flag-icons/css/flag-icons.min.css";
+
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 
