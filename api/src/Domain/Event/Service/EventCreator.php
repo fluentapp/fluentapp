@@ -86,6 +86,21 @@ class EventCreator
             }
         }
 
+
+        /**
+         * This seems to be a stinky code, conider refactoring or splitting
+         * The 404 & Custom events into separate Domain
+         */
+
+        if ($data['event'] == 'not_found') {
+            $this->eventRepository->insertEvent($data, false);
+            return [
+                'page_not_found_enabled' => $siteSettings->pageNotFoundEnabled,
+                'page_not_found_titles' => $siteSettings->pageNotFoundTitles,
+                'external_tracking_enabled' => $siteSettings->externalTrackingEnabled
+            ];
+        }
+
         /**
          * Returning visitor update:
          * 1.Check if visit time is more than 30 minutes
@@ -111,7 +126,11 @@ class EventCreator
 
             if ($minutesDifference >= 30) {
                 $this->eventRepository->insertEvent($data);
-                return;
+                return [
+                    'page_not_found_enabled' => $siteSettings->pageNotFoundEnabled,
+                    'page_not_found_titles' => $siteSettings->pageNotFoundTitles,
+                    'external_tracking_enabled' => $siteSettings->externalTrackingEnabled
+                ];
             }
             $this->eventRepository->insertEventPageView($data['hash'], $data);
 

@@ -38,9 +38,9 @@
                 if (request.status === 201 && request.readyState === 4) {
                     var settings = request.response.settings;
                     if (settings.page_not_found_enabled === true
-                            && eventType !== 'not_found')
+                            && eventType == 'pageview')
                     {
-                        var stringsToCheck = ['404', 'Page Not Found']; // this should come from the site settings
+                        var stringsToCheck = settings.page_not_found_titles.split(','); // this should come from the site settings
                         if (containsStringInWindowTitle(stringsToCheck))
                         {
                             sendEvent('not_found'); // Make another request with 'not_found' event type
