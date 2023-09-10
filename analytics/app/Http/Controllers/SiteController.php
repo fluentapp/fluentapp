@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Site;
 use App\Http\Requests\StoreSiteRequest;
 use App\Http\Requests\UpdateSiteRequest;
+use App\Models\SiteSetting;
 use App\Services\Site\SiteCreatorService;
 use App\Services\Site\SiteUpdatorService;
 use Exception;
@@ -102,5 +103,48 @@ class SiteController extends Controller
             return response()->json(['error' => true, 'message' => $e->getMessage()], 400);
         }
         return response()->json(['message' => 'deleted sucessfully '], 201);
+    }
+    /**
+     * Display a listing of the resource.
+     */
+    public function getPageNotFoundTitles(Request $request, $domain)
+    {
+        $siteSetting = SiteSetting::where('site_id', $request->site_id)->first();
+
+        if ($siteSetting) {
+            return response()->json([
+                'page_not_found_enabled' => empty($siteSetting->page_not_found_enabled) ? false : true,
+                'page_not_found_titles' => explode(',', $siteSetting->page_not_found_titles),
+            ]);
+        }
+
+        return response()->json(['page_not_found_titles' => []]);
+    }
+    /**
+     * Update the Site 404 settings.
+     */
+    public function updatePageNotFoundTitles(Request $request, $domain)
+    {
+        try {
+            $siteSetting = SiteSetting::where('site_id', $request->site_id)->first();
+
+            if (!$siteSetting) {
+                // Create a new SiteSetting if it doesn't exist
+                $siteSetting = new SiteSetting();
+                $siteSetting->site_id = $request->site_id;
+            }
+
+            $pageNotFoundEnabled = $request->input('page_not_found_enabled');
+            $pageNotFoundTitles = $request->input('page_not_found_titles');
+            $pageNotFoundTitlesArray = array_map('trim', $pageNotFoundTitles);
+            $siteSetting->page_not_found_enabled = $pageNotFoundEnabled;
+            $siteSetting->page_not_found_titles = implode(",", $pageNotFoundTitlesArray);
+            $siteSetting->save();
+            return response()->json(['message' => '404 titles updated successfully'], 201);
+        } catch (\Exception $e) {
+
+            dd($e->getMessage());
+            return response()->json(['error' => 'Failed to update page not found titles'], 500);
+        }
     }
 }

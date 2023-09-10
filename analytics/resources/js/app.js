@@ -40,6 +40,7 @@ import TabPanel from 'primevue/tabpanel';
 import MultiSelect from 'primevue/multiselect';
 import Chip from 'primevue/chip';
 import Calendar from 'primevue/calendar';
+import Chips from 'primevue/chips';
 
 import Sites from './pages/Sites.vue';
 import SiteDashbaord from './pages/SiteDashbaord.vue';
@@ -102,6 +103,7 @@ app.component('TabView', TabView);
 app.component('TabPanel', TabPanel);
 app.component('MultiSelect', MultiSelect);
 app.component('Chip', Chip);
+app.component('Chips', Chips);
 app.component('Calendar', Calendar);
 
 app.directive('tooltip', Tooltip);

@@ -49,6 +49,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/manage-site/{domain}', [App\Http\Controllers\SiteController::class, 'show'])->name('manage-site');
         Route::put('/sites/{domain}', [App\Http\Controllers\SiteController::class, 'update'])->name('sites');
         Route::delete('/sites/{domain}', [App\Http\Controllers\SiteController::class, 'destroy'])->name('sites');
+        Route::get('/sites/settings/{domain}/page-not-found-titles', [App\Http\Controllers\SiteController::class, 'getPageNotFoundTitles']);
+        Route::put('/sites/settings/{domain}/update-page-not-found-settings', [App\Http\Controllers\SiteController::class, 'updatePageNotFoundTitles']);
     });
 
     Route::get('timezones', function () {
