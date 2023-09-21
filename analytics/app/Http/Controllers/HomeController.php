@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Site;
 use App\Services\Widget\CurrentVisitorsService;
 use App\Services\Widget\DeviceService;
 use App\Services\Widget\LocationService;
@@ -9,6 +10,7 @@ use App\Services\Widget\PageService;
 use App\Services\Widget\SourceService;
 use App\Services\Widget\MainStatService;
 use App\Services\Widget\VisitorService;
+use App\Services\Widget\NotFoundService;
 
 use Illuminate\Http\Request;
 use Exception;
@@ -31,7 +33,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index($domain)
+    public function index(Request $request, $domain)
     {
         $sites =  Auth::user()->sites()->orderBy('id')->get()->toArray();
         if ($domain != Auth::user()->last_visited_site) {
@@ -39,7 +41,13 @@ class HomeController extends Controller
             $user->last_visited_site = $domain;
             $user->save();
         }
-        return view('my_dashboard', ["domain" => $domain, "sites" => $sites]);
+        $site = Site::where('id', $request->site_id)->first();
+        return view('my_dashboard', [
+            "domain" => $domain,
+            "sites" => $sites,
+            "show_404_widget" => empty($site->siteSetting->page_not_found_enabled) ? false : true,
+            "show_external_links_widget" => empty($site->siteSetting->external_tracking_enabled) ? false : true,
+        ]);
     }
 
     /**
@@ -252,6 +260,22 @@ class HomeController extends Controller
         $data = [];
         try {
             $data = (new PageService())->handle(array_merge($request->all(), ['page_category' => 'exit_pages']));
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+        return response()->json($data, 201);
+    }
+    /**
+     * Display the 404 pages Widget
+     *
+     * @param  \Illuminate\Http\Request $request The incoming request containing the filter_date parameter.
+     * @return \Illuminate\Http\JsonResponse The JSON response containing the data based on the filter.
+     */
+    public function notFound(Request $request, $domain)
+    {
+        $data = [];
+        try {
+            $data = (new NotFoundService())->handle(array_merge($request->all(), ['page_category' => 'exit_pages']));
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 400);
         }

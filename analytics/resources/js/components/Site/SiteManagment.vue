@@ -32,6 +32,16 @@
                 <a
                     class="nav-link"
                     href="#"
+                    :class="{
+                        active: activeSection === 'external-links-section',
+                    }"
+                    @click="showSection('external-links-section')"
+                >
+                    External Links
+                </a>
+                <a
+                    class="nav-link"
+                    href="#"
                     :class="{ active: activeSection === 'delete-section' }"
                     @click="showSection('delete-section')"
                 >
@@ -135,6 +145,41 @@
                     </div>
                 </div>
             </div>
+
+            <div
+                id="external-links-section"
+                v-show="activeSection === 'external-links-section'"
+                class="card bg-white"
+            >
+                <div class="card-body">
+                    <h3>External Links tracking</h3>
+                    <div class="form-group mt-5">
+                        <div class="form-switch p-0">
+                            <label
+                                class="form-check-label"
+                                for="chk-external-link"
+                                >Enable External Links in the dashboard</label
+                            >
+                            <input
+                                class="form-check-input custom-switch mx-5"
+                                type="checkbox"
+                                role="switch"
+                                id="chk-external-link"
+                                v-model="externalLinksEnabled"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <Button
+                            label="Save Changes"
+                            :loading="loading"
+                            @click="saveExternalLinksSettings"
+                            icon="pi pi-check"
+                        />
+                    </div>
+                </div>
+            </div>
             <div
                 id="delete-section"
                 v-show="activeSection === 'delete-section'"
@@ -181,11 +226,12 @@ const loading = ref(false);
 const isValidForm = computed(() => {
     return domain === "" || typeof timezone === "undefined" ? false : true;
 });
+const externalLinksEnabled = ref(false);
 const pageNotFoundEnabled = ref(false);
 const pageNotFoundTitles = ref([]);
 onMounted(() => {
     loadTimezones();
-    loadPageNotFoundTitles();
+    loadSettings();
 });
 
 const loadTimezones = () => {
@@ -273,18 +319,16 @@ const deleteSite = () => {
 const redirectToMainPage = () => {
     window.location.href = "/manage-sites/";
 };
-const loadPageNotFoundTitles = () => {
+const loadSettings = () => {
     axios
         .get(
-            prepareQueryString(
-                config.baseUrl + "sites/settings/",
-                domain.value,
-                "page-not-found-titles"
-            )
+            prepareQueryString(config.baseUrl + "sites/settings/", domain.value)
         )
         .then((response) => {
             pageNotFoundTitles.value = response.data.page_not_found_titles;
             pageNotFoundEnabled.value = response.data.page_not_found_enabled;
+            externalLinksEnabled.value =
+                response.data.external_tracking_enabled;
         })
         .catch((error) => {
             console.error(error);
@@ -324,6 +368,41 @@ const savePageNotFoundSettings = () => {
             console.error(error);
         });
 };
+
+const saveExternalLinksSettings = () => {
+    loading.value = true;
+    axios
+        .put(
+            prepareQueryString(
+                config.baseUrl + "sites/settings/",
+                domain.value,
+                "update-external-links-settings"
+            ),
+            {
+                external_links_enabled: externalLinksEnabled.value,
+            }
+        )
+        .then((response) => {
+            loading.value = false;
+            toast.add({
+                severity: "info",
+                summary: "Info",
+                detail: response.data.message,
+                life: 1500,
+            });
+        })
+        .catch((error) => {
+            loading.value = false;
+            toast.add({
+                severity: "error",
+                summary: "Error Message",
+                detail: "Failed to update page not found titles",
+                life: 1500,
+            });
+            console.error(error);
+        });
+};
+
 const showSection = (sectionId) => {
     activeSection.value = sectionId;
 };

@@ -45,12 +45,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{domain}/top-pages', [App\Http\Controllers\HomeController::class, 'topPages'])->name('top-pages');
         Route::get('/{domain}/entry-pages', [App\Http\Controllers\HomeController::class, 'entryPages'])->name('entry-pages');
         Route::get('/{domain}/exit-pages', [App\Http\Controllers\HomeController::class, 'exitPages'])->name('exit-pages');
+        Route::get('/{domain}/not-found', [App\Http\Controllers\HomeController::class, 'notFound'])->name('not-found');
 
         Route::get('/manage-site/{domain}', [App\Http\Controllers\SiteController::class, 'show'])->name('manage-site');
         Route::put('/sites/{domain}', [App\Http\Controllers\SiteController::class, 'update'])->name('sites');
         Route::delete('/sites/{domain}', [App\Http\Controllers\SiteController::class, 'destroy'])->name('sites');
-        Route::get('/sites/settings/{domain}/page-not-found-titles', [App\Http\Controllers\SiteController::class, 'getPageNotFoundTitles']);
+        Route::get('/sites/settings/{domain}/', [App\Http\Controllers\SiteController::class, 'getSettings']);
         Route::put('/sites/settings/{domain}/update-page-not-found-settings', [App\Http\Controllers\SiteController::class, 'updatePageNotFoundTitles']);
+        Route::put('/sites/settings/{domain}/update-external-links-settings', [App\Http\Controllers\SiteController::class, 'updateExternalLinkSetting']);
     });
 
     Route::get('timezones', function () {

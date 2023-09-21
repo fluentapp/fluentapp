@@ -58,6 +58,9 @@ import LocationsDetails from './components/Dashboard/LocationsDetails.vue';
 import Devices from './components/Dashboard/Devices.vue';
 import DevicesDetails from './components/Dashboard/DevicesDetails.vue';
 import SingleCompStat from './components/Dashboard/SingleCompStat.vue';
+import NotFound from './components/Dashboard/NotFound.vue';
+import NotFoundDetails from './components/Dashboard/NotFoundDetails.vue';
+
 import Loader from './components/Loader.vue';
 import NewSite from './components/Site/NewSite.vue';
 import Snippet from './components/Site/Snippet.vue';
@@ -85,6 +88,8 @@ app.component('Loader', Loader);
 app.component('NewSite', NewSite);
 app.component('Snippet', Snippet);
 app.component('SiteManagment', SiteManagment);
+app.component('NotFound', NotFound);
+app.component('NotFoundDetails', NotFoundDetails);
 
 
 // primevue components 

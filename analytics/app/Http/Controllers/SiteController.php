@@ -107,7 +107,7 @@ class SiteController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function getPageNotFoundTitles(Request $request, $domain)
+    public function getSettings(Request $request, $domain)
     {
         $siteSetting = SiteSetting::where('site_id', $request->site_id)->first();
 
@@ -115,10 +115,15 @@ class SiteController extends Controller
             return response()->json([
                 'page_not_found_enabled' => empty($siteSetting->page_not_found_enabled) ? false : true,
                 'page_not_found_titles' => explode(',', $siteSetting->page_not_found_titles),
+                'external_tracking_enabled' => empty($siteSetting->external_tracking_enabled) ? false : true,
             ]);
         }
 
-        return response()->json(['page_not_found_titles' => []]);
+        return response()->json([
+            'page_not_found_enabled' =>  false,
+            'page_not_found_titles' => [],
+            'external_tracking_enabled' => false,
+        ]);
     }
     /**
      * Update the Site 404 settings.
@@ -142,9 +147,30 @@ class SiteController extends Controller
             $siteSetting->save();
             return response()->json(['message' => '404 titles updated successfully'], 201);
         } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to update page not found titles'], 400);
+        }
+    }
 
-            dd($e->getMessage());
-            return response()->json(['error' => 'Failed to update page not found titles'], 500);
+    /**
+     * Update the Site external links settings.
+     */
+    public function updateExternalLinkSetting(Request $request, $domain)
+    {
+        try {
+            $siteSetting = SiteSetting::where('site_id', $request->site_id)->first();
+
+            if (!$siteSetting) {
+                // Create a new SiteSetting if it doesn't exist
+                $siteSetting = new SiteSetting();
+                $siteSetting->site_id = $request->site_id;
+            }
+
+            $externalLinksEnabled = $request->input('external_links_enabled');
+            $siteSetting->external_tracking_enabled = $externalLinksEnabled;
+            $siteSetting->save();
+            return response()->json(['message' => 'updated successfully'], 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to update'], 400);
         }
     }
 }

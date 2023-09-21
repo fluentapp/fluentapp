@@ -12,7 +12,7 @@ return new class () extends Migration {
     {
         Schema::create('site_settings', function (Blueprint $table) {
             $table->id();
-            $table->boolean('page_not_found_enabled')->default(true);
+            $table->boolean('page_not_found_enabled')->default(false);
             $table->string('page_not_found_titles')->nullable();
             $table->boolean('external_tracking_enabled')->default(false);
             $table->bigInteger('site_id', false, true);
