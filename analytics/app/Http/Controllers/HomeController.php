@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Site;
 use App\Services\Widget\CurrentVisitorsService;
 use App\Services\Widget\DeviceService;
+use App\Services\Widget\ExternalLinkService;
 use App\Services\Widget\LocationService;
 use App\Services\Widget\PageService;
 use App\Services\Widget\SourceService;
@@ -275,7 +276,23 @@ class HomeController extends Controller
     {
         $data = [];
         try {
-            $data = (new NotFoundService())->handle(array_merge($request->all(), ['page_category' => 'exit_pages']));
+            $data = (new NotFoundService())->handle(array_merge($request->all()));
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+        return response()->json($data, 201);
+    }
+    /**
+     * Display the external links Widget
+     *
+     * @param  \Illuminate\Http\Request $request The incoming request containing the filter_date parameter.
+     * @return \Illuminate\Http\JsonResponse The JSON response containing the data based on the filter.
+     */
+    public function externalLinks(Request $request, $domain)
+    {
+        $data = [];
+        try {
+            $data = (new ExternalLinkService())->handle(array_merge($request->all()));
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 400);
         }

@@ -7,6 +7,7 @@
         <Locations />
         <Devices />
         <NotFound v-if="props.withNotFound" />
+        <ExternalLinks v-if="props.withExternal" />
     </div>
 </template>
 <script setup>

@@ -11,7 +11,7 @@
         <template #header>
             <div class="container">
                 <div class="d-flex justify-content-between">
-                    <div><h4>Page Not Found</h4></div>
+                    <div><h4> External Links</h4></div>
                     <div>
                         <Button
                             icon="pi pi-times"
@@ -28,8 +28,8 @@
             <Loader :active="loading" style="margin-top: 25%"></Loader>
             <div :class="{ 'd-none': loading }">
                 <DataTable
-                    v-if="notFoundList.length > 0"
-                    :value="notFoundList"
+                    v-if="externalLinkList.length > 0"
+                    :value="externalLinkList"
                     class="p-datatable-sm"
                 >
                     <Column
@@ -54,31 +54,30 @@ const emit = defineEmits(["closePopup"]);
 const filter = inject("filter");
 const domain = inject("domain");
 const loading = ref(true);
-const notFoundList = ref([]);
+const externalLinkList = ref([]);
 
 const columns = [
-    { field: "pages", header: "Pages" },
-    { field: "error_per_page", header: "Visitors" },
+    { field: "link", header: "Links" },
+    { field: "clicks_per_link", header: "Clicks" },
 ];
 watch(props, () => {
-    if (props.visible) fetchNotFoundDetails();
+    if (props.visible) fetchExternalLinksDetails();
 });
-const fetchNotFoundDetails = () => {
+const fetchExternalLinksDetails = () => {
     loading.value = true;
     axios
         .get(
             prepareQueryString(
                 config.baseUrl,
                 domain,
-                "not-found",
+                "external-links",
                 filter.value,
                 { with_details: 1, limit: 100 }
             )
         )
         .then((response) => {
             loading.value = false;
-            console.log(response.data);
-            notFoundList.value = response.data;
+            externalLinkList.value = response.data;
         })
         .catch((error) => {
             console.log(error);

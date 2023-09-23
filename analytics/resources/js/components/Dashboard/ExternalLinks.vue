@@ -2,31 +2,31 @@
     <div class="col-md-6 mt-2">
         <div class="card card-stat bg-white mt-2">
             <div class="card-header bg-white">
-                <span class="text-capitalize fw-bold"> Page not found </span>
+                <span class="text-capitalize fw-bold"> External Links </span>
             </div>
             <div class="card-body">
                 <Loader :active="loading" style="margin-top: 25%"></Loader>
                 <table width="100%" :class="{ 'd-none': loading }">
                     <thead>
                         <tr>
-                            <th width="90%" class="text-start">Pages</th>
-                            <th width="10%" class="text-end">Visitors</th>
+                            <th width="90%" class="text-start">Links </th>
+                            <th width="10%" class="text-end">Clicks</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="notFound in notFoundList">
+                        <tr v-for="externalLink in externalLinkList">
                             <td class="text-start">
                                 <a
                                     class="link-dark link-underline-opacity-0"
                                 >
-                                    {{ notFound.pages }}
+                                    {{ externalLink.link }}
                                 </a>
                             </td>
                             <td class="text-end">
-                                {{ kFormatter(notFound.error_per_page) }}
+                                {{ kFormatter(externalLink.clicks_per_link) }}
                             </td>
                         </tr>
-                        <tr v-if="notFoundList.length === 0">
+                        <tr v-if="externalLinkList.length === 0">
                             <td colspan="2" class="pt-2">No Data found</td>
                         </tr>
                     </tbody>
@@ -42,7 +42,7 @@
             </div>
         </div>
     </div>
-    <NotFoundDetails :visible="isShowDetails" @close-popup="closePopup" />
+    <ExternalLinksDetails :visible="isShowDetails" @close-popup="closePopup" />
 </template>
 <script setup>
 import { ref, inject, watch, onMounted } from "vue";
@@ -53,19 +53,19 @@ const filter = inject("filter");
 const domain = inject("domain");
 const loading = ref(true);
 const isShowDetails = ref(false);
-const notFoundList = ref([]);
+const externalLinkList = ref([]);
 let cancelTokenSource = axios.CancelToken.source();
 
 // Call the function to fetch and update the widgets initially
 onMounted(() => {
-    updateNotFoundWidget();
+    updateExternalLinkWidget();
 });
 // watch works directly on a ref
 watch(filter.value, () => {
-    updateNotFoundWidget();
+    updateExternalLinkWidget();
 });
 // Function to fetch data from the server and update the  Not Found Widget
-const updateNotFoundWidget = () => {
+const updateExternalLinkWidget = () => {
     // Cancel previous request (if any)
     cancelTokenSource.cancel("Request canceled");
     cancelTokenSource = axios.CancelToken.source();
@@ -75,7 +75,7 @@ const updateNotFoundWidget = () => {
             prepareQueryString(
                 config.baseUrl,
                 domain,
-                "not-found",
+                "external-links",
                 filter.value,
                 { limit: 10 }
             ),
@@ -83,7 +83,7 @@ const updateNotFoundWidget = () => {
         )
         .then((response) => {
             loading.value = false;
-            notFoundList.value = response.data;
+            externalLinkList.value = response.data;
         })
         .catch((error) => {
             if (!axios.isCancel(error)) {

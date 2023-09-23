@@ -8,7 +8,7 @@ use Carbon\Carbon;
 class NotFound extends ModelsEvent
 {
     /**
-     * Get the Source(referrer) order by visitors for range of dates.
+     * Get the 404 pages order by count of pages for range of dates.
      *
      * @param string $fromDate The from date in 'Y-m-d' format.
      * @param string $toDate The to date in 'Y-m-d' format.
@@ -26,13 +26,12 @@ class NotFound extends ModelsEvent
         $notFound = $notFound->where('events.updated_at', '>=', $fromDate)
             ->where('events.updated_at', '<=', $toDate);
         $notFound = self::appendQuery($notFound, $filters, 'not_found');
-        dd($notFound->toRawSql());
         $notFound = $notFound->get();
 
         return $notFound->toArray();
     }
     /**
-     * Get the Source(referrer) order by visitors real time.
+     * Get the 404 pages order by count of pages for range real time.
      *
      * @param int $sec The previous seconds which retrieve the total visitors per referrer
      * @param array $filters The filters for which to retrieve count

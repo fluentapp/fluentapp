@@ -46,6 +46,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{domain}/entry-pages', [App\Http\Controllers\HomeController::class, 'entryPages'])->name('entry-pages');
         Route::get('/{domain}/exit-pages', [App\Http\Controllers\HomeController::class, 'exitPages'])->name('exit-pages');
         Route::get('/{domain}/not-found', [App\Http\Controllers\HomeController::class, 'notFound'])->name('not-found');
+        Route::get('/{domain}/external-links', [App\Http\Controllers\HomeController::class, 'externalLinks'])->name('external-links');
 
         Route::get('/manage-site/{domain}', [App\Http\Controllers\SiteController::class, 'show'])->name('manage-site');
         Route::put('/sites/{domain}', [App\Http\Controllers\SiteController::class, 'update'])->name('sites');
