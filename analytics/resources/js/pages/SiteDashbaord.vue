@@ -6,12 +6,14 @@
         <Pages />
         <Locations />
         <Devices />
+        <NotFound v-if="props.withNotFound" />
+        <ExternalLinks v-if="props.withExternal" />
     </div>
 </template>
 <script setup>
 import { ref, provide } from "vue";
 
-const props = defineProps(["domain"]);
+const props = defineProps(["domain", "withNotFound", "withExternal"]);
 const filter = ref({
     period: "today",
     metric: "unique_visitors",

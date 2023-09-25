@@ -29,9 +29,10 @@ class Event extends Model
 
 
     // @todo Omar to implement all filters
-    public static function appendQuery($event, $filters)
+    public static function appendQuery($event, $filters, $eventType = "pageview")
     {
         $event = $event->where('site_id', $filters['site_id']);
+        $event = $event->where('events.event', $eventType);
         $moreFilters = !empty($filters['filters']) ? json_decode($filters['filters']) : [];
         foreach ($moreFilters as $filter) {
             $field = self::getValueForKey($filter->key ?? '');
