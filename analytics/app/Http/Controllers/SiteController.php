@@ -114,7 +114,7 @@ class SiteController extends Controller
         if ($siteSetting) {
             return response()->json([
                 'page_not_found_enabled' => empty($siteSetting->page_not_found_enabled) ? false : true,
-                'page_not_found_titles' => explode(',', $siteSetting->page_not_found_titles),
+                'page_not_found_titles' => array_filter(explode(',', $siteSetting->page_not_found_titles ?? '')),
                 'external_tracking_enabled' => empty($siteSetting->external_tracking_enabled) ? false : true,
             ]);
         }

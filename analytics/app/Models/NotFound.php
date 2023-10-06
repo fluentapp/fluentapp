@@ -18,7 +18,7 @@ class NotFound extends ModelsEvent
     public static function getNotFoundVisitorsByDateRange(string $fromDate = '', string $toDate = '', array $filters): array
     {
         $notFound = self::selectRaw("COUNT(id) as error_per_page, entry_page as pages")
-            ->join('pageviews', 'events.id', '=', 'pageviews.event_id')
+            ->leftJoin('pageviews', 'events.id', '=', 'pageviews.event_id')
             ->groupBy("entry_page")
             ->limit($filters['limit'] ?? 10)
             ->orderBy('error_per_page', 'desc');
@@ -41,7 +41,7 @@ class NotFound extends ModelsEvent
     {
         $secondsAgo = Carbon::now()->subSeconds($sec);
         $notFound = self::selectRaw("COUNT(id) as error_per_page, entry_page as pages")
-            ->join('pageviews', 'events.id', '=', 'pageviews.event_id')
+            ->leftJoin('pageviews', 'events.id', '=', 'pageviews.event_id')
             ->groupBy("entry_page")
             ->orderBy('error_per_page', 'desc');
 

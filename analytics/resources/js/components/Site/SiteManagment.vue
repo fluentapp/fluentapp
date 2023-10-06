@@ -30,7 +30,7 @@
                     Page Not Found
                 </a>
                 <a
-                    class="nav-link"
+                    class="nav-link d-none"
                     href="#"
                     :class="{
                         active: activeSection === 'external-links-section',
@@ -261,8 +261,7 @@ const editSite = () => {
             .then((response) => {
                 loading.value = false;
                 toast.add({
-                    severity: "info",
-                    summary: "Info",
+                    severity: "success",
                     detail: "Site updated successfully",
                     life: 1500,
                 });
@@ -298,8 +297,7 @@ const deleteSite = () => {
         .then((response) => {
             loading.value = false;
             toast.add({
-                severity: "info",
-                summary: "Info",
+                severity: "success",
                 detail: "Site deleted successfully",
                 life: 1500,
             });
@@ -335,6 +333,14 @@ const loadSettings = () => {
         });
 };
 const savePageNotFoundSettings = () => {
+    if (pageNotFoundEnabled.value && pageNotFoundTitles.value.length === 0) {
+        toast.add({
+            severity: "info",
+            detail: "Oops! It seems like you forgot to add a title for the Page Not Found message. Please fill it in to continue. ",
+            life: 3500,
+        });
+        return;
+    }
     loading.value = true;
     axios
         .put(
@@ -351,8 +357,7 @@ const savePageNotFoundSettings = () => {
         .then((response) => {
             loading.value = false;
             toast.add({
-                severity: "info",
-                summary: "Info",
+                severity: "success",
                 detail: response.data.message,
                 life: 1500,
             });
@@ -385,8 +390,7 @@ const saveExternalLinksSettings = () => {
         .then((response) => {
             loading.value = false;
             toast.add({
-                severity: "info",
-                summary: "Info",
+                severity: "success",
                 detail: response.data.message,
                 life: 1500,
             });

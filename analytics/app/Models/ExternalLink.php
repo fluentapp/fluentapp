@@ -18,7 +18,7 @@ class ExternalLink extends ModelsEvent
     public static function getExternalLinkClicksByDateRange(string $fromDate = '', string $toDate = '', array $filters): array
     {
         $externalLink = self::selectRaw("COUNT(id) as clicks_per_link, entry_page as link")
-            ->join('pageviews', 'events.id', '=', 'pageviews.event_id')
+            ->leftJoin('pageviews', 'events.id', '=', 'pageviews.event_id')
             ->groupBy("entry_page")
             ->limit($filters['limit'] ?? 10)
             ->orderBy('clicks_per_link', 'desc');
@@ -41,7 +41,7 @@ class ExternalLink extends ModelsEvent
     {
         $secondsAgo = Carbon::now()->subSeconds($sec);
         $externalLink = self::selectRaw("COUNT(id) as clicks_per_link, entry_page as link")
-            ->join('pageviews', 'events.id', '=', 'pageviews.event_id')
+            ->leftJoin('pageviews', 'events.id', '=', 'pageviews.event_id')
             ->groupBy("entry_page")
             ->orderBy('clicks_per_link', 'desc');
 
