@@ -49,6 +49,14 @@
                                         )
                                     "
                                 >
+                                    <span
+                                        :class="
+                                            'fi fi-' +
+                                            (location.country_code
+                                                ? location.country_code.toLowerCase()
+                                                : 'xx')
+                                        "
+                                    ></span>
                                     {{ location[locationCategory] }}
                                 </a>
                             </td>

@@ -40,7 +40,7 @@
                         <tr v-for="device in devicesList">
                             <td class="text-start">
                                 <a
-                                    class="link-dark link-underline-opacity-0 link-underline-opacity-75-hover"
+                                    class="link-dark link-underline-opacity-0 link-underline-opacity-75-hover text-capitalize"
                                     href="#"
                                     @click.prevent="
                                         addFilter(
@@ -49,6 +49,22 @@
                                         )
                                     "
                                 >
+                                    <span
+                                        v-if="deviceCategory == 'sizes'"
+                                        :class="{
+                                            'mx-1': true,
+                                            pi: true,
+                                            'pi-mobile':
+                                                device[deviceCategory] ===
+                                                'mobile',
+                                            'pi-desktop':
+                                                device[deviceCategory] ===
+                                                'desktop',
+                                            'pi-tablet':
+                                                device[deviceCategory] ===
+                                                'tablet',
+                                        }"
+                                    ></span>
                                     {{ device[deviceCategory] }}
                                 </a>
                             </td>

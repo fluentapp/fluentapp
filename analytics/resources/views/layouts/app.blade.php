@@ -45,6 +45,7 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <!-- 
                                 <div class="dropdown-item">
                                     <div class="flex justify-center sm:justify-start sm:pt-0">
                                         @foreach(["عربي" => "ar", "English"=>"en"] as $locale_name => $available_locale)
@@ -58,6 +59,7 @@
                                         @endforeach
                                     </div>
                                 </div>
+                                -->
                                 <a class="dropdown-item" href="{{ route('manage-sites') }}">
                                     {{ __('Manage Sites') }}
                                 </a>

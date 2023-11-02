@@ -81,7 +81,7 @@ abstract class WidgetBase
     {
         $matches = [];
         if (preg_match('/([+-])(\d{2}):(\d{2})/', $offset, $matches)) {
-            $sign = ($matches[1] === '+') ? 1 : -1;
+            $sign = ($matches[1] === '-') ? 1 : -1;
             $hours = intval($matches[2]);
             $minutes = intval($matches[3]);
             $totalMinutes = ($hours * 60 + $minutes) * $sign;
