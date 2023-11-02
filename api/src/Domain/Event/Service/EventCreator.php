@@ -10,6 +10,7 @@ use App\Domain\GeoIP\Service\GeoIPFinder;
 use App\Domain\Event\Site\Service\SiteFinder;
 use App\Support\ReferrerExtractor;
 use App\Domain\Event\Site\Data\SiteData;
+use App\Domain\Event\SiteSettings\Service\SiteSettingsFinder;
 
 class EventCreator
 {
@@ -21,7 +22,7 @@ class EventCreator
     private ReferrerExtractor $referrerExtractor;
     private EventUpdator $eventUpdator;
     private SiteFinder $siteFinder;
-
+    private SiteSettingsFinder $siteSettingsFinder;
     /*
      * This variable is used to protect spoofing the even parameter in the API
      */
@@ -35,7 +36,8 @@ class EventCreator
         GeoIPFinder $geoIPFinder,
         ReferrerExtractor $referrerExtractor,
         EventUpdator $eventUpdator,
-        SiteFinder $siteFinder
+        SiteFinder $siteFinder,
+        SiteSettingsFinder $siteSettingsFinder
     ) {
         $this->eventRepository = $eventRepository;
         $this->dailHashService = $dailHashService;
@@ -45,6 +47,7 @@ class EventCreator
         $this->referrerExtractor = $referrerExtractor;
         $this->eventUpdator = $eventUpdator;
         $this->siteFinder = $siteFinder;
+        $this->siteSettingsFinder = $siteSettingsFinder;
     }
 
     /**
@@ -60,6 +63,8 @@ class EventCreator
         $siteData = $this->siteFinder->find($data['domain']);
         $data['site_id'] = $siteData->id;
 
+        // Get Site Settings
+        $siteSettings = $this->siteSettingsFinder->find($siteData->id);
 
         $data['created_at'] = date("Y-m-d H:i:s");
         $data['updated_at'] = date("Y-m-d H:i:s");
@@ -81,6 +86,21 @@ class EventCreator
             }
         }
 
+
+        /**
+         * This seems to be a stinky code, conider refactoring or splitting
+         * The 404 & Custom events into separate Domain
+         */
+
+        if ($data['event'] == 'not_found') {
+            $this->eventRepository->insertEvent($data, false);
+            return [
+                'page_not_found_enabled' => $siteSettings->pageNotFoundEnabled,
+                'page_not_found_titles' => $siteSettings->pageNotFoundTitles,
+                'external_tracking_enabled' => $siteSettings->externalTrackingEnabled
+            ];
+        }
+
         /**
          * Returning visitor update:
          * 1.Check if visit time is more than 30 minutes
@@ -100,13 +120,17 @@ class EventCreator
                     $timeDifference->h * 60 +
                     $timeDifference->i;
             $secondsDifference = $timeDifference->days * 24 * 60 * 60 +
-                     $timeDifference->h * 60 * 60 +
-                     $timeDifference->i * 60 +
-                     $timeDifference->s;
+                    $timeDifference->h * 60 * 60 +
+                    $timeDifference->i * 60 +
+                    $timeDifference->s;
 
             if ($minutesDifference >= 30) {
                 $this->eventRepository->insertEvent($data);
-                return;
+                return [
+                    'page_not_found_enabled' => $siteSettings->pageNotFoundEnabled,
+                    'page_not_found_titles' => $siteSettings->pageNotFoundTitles,
+                    'external_tracking_enabled' => $siteSettings->externalTrackingEnabled
+                ];
             }
             $this->eventRepository->insertEventPageView($data['hash'], $data);
 
@@ -118,6 +142,12 @@ class EventCreator
         } else {
             $this->eventRepository->insertEvent($data);
         }
+
+        return [
+            'page_not_found_enabled' => $siteSettings->pageNotFoundEnabled,
+            'page_not_found_titles' => $siteSettings->pageNotFoundTitles,
+            'external_tracking_enabled' => $siteSettings->externalTrackingEnabled
+        ];
     }
 
     private function generateVisitHash(string $ip, string $userAgent, string $domain): string

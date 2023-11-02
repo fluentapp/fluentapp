@@ -27,7 +27,7 @@ final class EventCreatorAction
         $serverVars = $request->getServerParams();
 
         // Invoke the Domain with inputs and retain the result
-        $eventId = $this->eventCreator->create(array_merge(
+        $eventData = $this->eventCreator->create(array_merge(
             $data,
             [
                 'user_agent' => $serverVars['HTTP_USER_AGENT'],
@@ -37,7 +37,7 @@ final class EventCreatorAction
 
         // Build the HTTP response
         return $this->renderer
-                        ->json($response, ['result' => 'success'])
+                        ->json($response, ['result' => 'success', 'settings' => $eventData])
                         ->withStatus(StatusCodeInterface::STATUS_CREATED);
     }
 }

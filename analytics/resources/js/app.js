@@ -42,6 +42,7 @@ import TabPanel from 'primevue/tabpanel';
 import MultiSelect from 'primevue/multiselect';
 import Chip from 'primevue/chip';
 import Calendar from 'primevue/calendar';
+import Chips from 'primevue/chips';
 
 import Sites from './pages/Sites.vue';
 import SiteDashbaord from './pages/SiteDashbaord.vue';
@@ -59,6 +60,11 @@ import LocationsDetails from './components/Dashboard/LocationsDetails.vue';
 import Devices from './components/Dashboard/Devices.vue';
 import DevicesDetails from './components/Dashboard/DevicesDetails.vue';
 import SingleCompStat from './components/Dashboard/SingleCompStat.vue';
+import NotFound from './components/Dashboard/NotFound.vue';
+import NotFoundDetails from './components/Dashboard/NotFoundDetails.vue';
+import ExternalLinks from './components/Dashboard/ExternalLinks.vue';
+import ExternalLinksDetails from './components/Dashboard/ExternalLinksDetails.vue';
+
 import Loader from './components/Loader.vue';
 import NewSite from './components/Site/NewSite.vue';
 import Snippet from './components/Site/Snippet.vue';
@@ -86,6 +92,10 @@ app.component('Loader', Loader);
 app.component('NewSite', NewSite);
 app.component('Snippet', Snippet);
 app.component('SiteManagment', SiteManagment);
+app.component('NotFound', NotFound);
+app.component('NotFoundDetails', NotFoundDetails);
+app.component('ExternalLinks', ExternalLinks);
+app.component('ExternalLinksDetails', ExternalLinksDetails);
 
 
 // primevue components 
@@ -104,6 +114,7 @@ app.component('TabView', TabView);
 app.component('TabPanel', TabPanel);
 app.component('MultiSelect', MultiSelect);
 app.component('Chip', Chip);
+app.component('Chips', Chips);
 app.component('Calendar', Calendar);
 
 app.directive('tooltip', Tooltip);

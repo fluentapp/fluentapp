@@ -18,6 +18,6 @@
             </div>
         </div>
     </div>
-    <site-dashboard domain="{{ $domain }}"></site-dashboard>
+    <site-dashboard domain="{{ $domain }}" with-not-found="{{ $show_404_widget }}" with-external="{{ $show_external_links_widget }}"></site-dashboard>
 </div>
 @endsection

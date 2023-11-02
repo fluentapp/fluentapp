@@ -17,8 +17,9 @@ class EventRepository
     /**
      *
      * @param array $data
+     * @param bool $withPageView should be false for events other than page view
      */
-    public function insertEvent(array $data)
+    public function insertEvent(array $data, bool $withPageView = true)
     {
         $this->queryFactory->newInsert('events', [
             'hash' => $data['hash'],
@@ -42,7 +43,9 @@ class EventRepository
             'referrer_domain' => @$data['referrer_domain'] // dirty, should be handled in the domain
         ])->execute();
 
-        $this->insertEventPageView($data['hash'], $data);
+        if ($withPageView) {
+            $this->insertEventPageView($data['hash'], $data);
+        }
     }
 
     public function updateEvent(string $hash, array $data)

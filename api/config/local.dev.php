@@ -12,7 +12,7 @@ return function (array $settings): array {
     $settings['logger']['level'] = \Monolog\Level::Debug;
 
     // Database
-    $settings['db']['database'] = 'slim_skeleton_dev';
+    $settings['db']['database'] = 'fluentapp_dev';
 
     return $settings;
 };

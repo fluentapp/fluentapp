@@ -22,7 +22,6 @@ return new class () extends Migration {
             $table->id();
             $table->string('fqdn')->unique();
             $table->string('timezone')->default('UTC');
-            ;
             $table->boolean('active');
             $table->timestamps();
         });
