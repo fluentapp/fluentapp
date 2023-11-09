@@ -7,7 +7,7 @@ return function (array $settings): array {
     $settings['error']['log_errors'] = true;
 
     // Database
-    $settings['db']['database'] = 'test';
+    $settings['db']['database'] = 'fluentapp_test';
 
     // Mocked Logger settings
     $settings['logger'] = [

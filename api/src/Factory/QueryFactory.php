@@ -4,6 +4,9 @@ namespace App\Factory;
 
 use Cake\Database\Connection;
 use Cake\Database\Query;
+use Cake\Database\Query\SelectQuery;
+use Cake\Database\Query\UpdateQuery;
+use Cake\Database\Query\InsertQuery;
 use RuntimeException;
 
 /**
@@ -30,21 +33,19 @@ final class QueryFactory
      *
      * @throws RuntimeException
      *
-     * @return Query A new select query
+     * @return SelectQuery A new select query
      */
-    public function newSelect(string $table): Query
+    public function newSelect(string $table): SelectQuery
     {
-        return $this->newQuery()->from($table);
+        return $this->newSelectQuery()->from($table);
     }
 
     /**
-     * Create a new query.
-     *
-     * @return Query The query
+     * Create a new select query
      */
-    public function newQuery(): Query
+    public function newSelectQuery(): SelectQuery
     {
-        return $this->connection->newQuery();
+        return $this->connection->selectQuery();
     }
 
     /**
@@ -55,9 +56,17 @@ final class QueryFactory
      *
      * @return Query The new update query
      */
-    public function newUpdate(string $table, array $data): Query
+    public function newUpdate(string $table, array $data): UpdateQuery
     {
-        return $this->newQuery()->update($table)->set($data);
+        return $this->newUpdateQuery()->update($table)->set($data);
+    }
+
+    /**
+     * Create a new update query
+     */
+    public function newUpdateQuery(): UpdateQuery
+    {
+        return $this->connection->updateQuery();
     }
 
     /**
@@ -68,11 +77,19 @@ final class QueryFactory
      *
      * @return Query The new insert query
      */
-    public function newInsert(string $table, array $data): Query
+    public function newInsert(string $table, array $data): InsertQuery
     {
-        return $this->newQuery()->insert(array_keys($data))
+        return $this->newInsertQuery()->insert(array_keys($data))
             ->into($table)
             ->values($data);
+    }
+
+    /**
+     * Create a new insert query
+     */
+    public function newInsertQuery(): InsertQuery
+    {
+        return $this->connection->insertQuery();
     }
 
     /**

@@ -56,6 +56,11 @@ class EventCreator
      */
     public function create($data)
     {
+
+        // extract the UTM parameters from the URL and set them in the $data variable
+        // this will allow to pass them to the validator
+        $data = $this->getUtm($data);
+
         $this->eventValidator->validateEvent($data);
         $data = $this->sanitize($data);
 
@@ -153,7 +158,7 @@ class EventCreator
     private function generateVisitHash(string $ip, string $userAgent, string $domain): string
     {
         $dailyHash = $this->dailHashService->getLatest();
-
+        
         return hash('sha256', $dailyHash . $domain . $ip . $userAgent);
     }
 
@@ -169,6 +174,25 @@ class EventCreator
         $data['country_code'] = $geoData->country_code;
         $data['city'] = $geoData->city;
         $data['state'] = $geoData->state;
+        return $data;
+    }
+
+    /**
+     * Extract UTM parameters from the URL
+     */
+    private function getUtm(array $data): array
+    {
+        $parsedUrl = parse_url($data['page']);
+
+        if (isset($parsedUrl['query'])) {
+            parse_str($parsedUrl['query'], $queryParameters);
+            $data['utm_source'] = $queryParameters['utm_source'] ?? '';
+            $data['utm_medium'] = $queryParameters['utm_medium'] ?? '';
+            $data['utm_campaign'] = $queryParameters['utm_campaign'] ?? '';
+            $data['utm_content'] = $queryParameters['utm_content'] ?? '';
+            $data['utm_term'] = $queryParameters['utm_term'] ?? '';
+        }
+
         return $data;
     }
 
