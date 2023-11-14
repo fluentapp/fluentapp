@@ -10,6 +10,7 @@ class Location extends ModelsEvent
     /**
      * Get the Location order by visitors for range of dates.
      *
+     * @param string $locationCategory The from location category searching for (city , country..)
      * @param string $fromDate The from date in 'Y-m-d' format.
      * @param string $toDate The to date in 'Y-m-d' format.
      * @param array $filters The filters for which to retrieve count
@@ -30,7 +31,8 @@ class Location extends ModelsEvent
     }
     /**
      * Get the Location  order by visitors real time.
-     *
+     * 
+     * @param string $locationCategory The from location category searching for (city , country..)
      * @param int $sec The previous seconds which retrieve the total visitors per Location
      * @param array $filters The filters for which to retrieve count
      * @return array The count of visitors by Location.

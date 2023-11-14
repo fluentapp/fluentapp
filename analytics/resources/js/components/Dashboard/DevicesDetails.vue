@@ -85,7 +85,6 @@ const fetchDevicesDetails = () => {
         )
         .then((response) => {
             loading.value = false;
-            console.log(response.data);
             devicesList.value = response.data;
         })
         .catch((error) => {

@@ -5,7 +5,7 @@
                 <span class="text-capitalize fw-bold">
                     {{ sources[sourceCategory].name }}
                 </span>
-                <ul class="list-inline float-end m-0 d-none">
+                <ul class="list-inline float-end m-0">
                     <li
                         class="list-inline-item"
                         v-for="(value, key) in sources"
@@ -14,8 +14,14 @@
                         <Button
                             :label="value.name"
                             size="small"
+                            style="font-size: 0.8rem"
+                            :class="{
+                                'fw-bold text-decoration-underline':
+                                    sourceCategory == key,
+                            }"
                             class="p-0"
                             link
+                            @click="setSourceCategory(key)"
                         />
                     </li>
                 </ul>
@@ -38,10 +44,16 @@
                                     class="link-dark link-underline-opacity-0 link-underline-opacity-75-hover"
                                     href="#"
                                     @click.prevent="
-                                        addFilter('sources', source.sources)
+                                        addFilter(
+                                            sourceCategory,
+                                            source[sourceCategory]
+                                        )
                                     "
                                 >
-                                    {{ source.sources ?? "Direct / None" }}
+                                    {{
+                                        source[sourceCategory] ??
+                                        "Direct / None"
+                                    }}
                                 </a>
                             </td>
                             <td class="text-end">
@@ -74,6 +86,7 @@
 import { ref, inject, watch, onMounted } from "vue";
 import {
     kFormatter,
+    checkValueInKeys,
     prepareQueryString,
     appendToFilters,
 } from "./../../helpers";
@@ -124,12 +137,20 @@ const updateSourcesWidget = () => {
         });
 };
 
+const setSourceCategory = (type) => {
+    if (checkValueInKeys(type, sources)) {
+        sourceCategory.value = type;
+        updateSourcesWidget(type);
+    }
+};
+
 const addFilter = (filterCategory, filterValue) => {
     const filtersObject = JSON.parse(filter.value.filters);
     filter.value.filters = JSON.stringify(
         appendToFilters(filtersObject, filterCategory, filterValue, true)
     );
 };
+
 const showDetailsPopup = () => {
     isShowDetails.value = true;
 };

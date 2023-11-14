@@ -85,7 +85,6 @@ const fetchPagesDetails = () => {
         )
         .then((response) => {
             loading.value = false;
-            console.log(response.data);
             pagesList.value = response.data;
         })
         .catch((error) => {

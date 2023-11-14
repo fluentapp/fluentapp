@@ -63,7 +63,32 @@ export const sources = {
     sources: {
         name: 'Top Sources',
         url: 'sources',
-        field: 'sources',
+        field: 'all_sources',
+    },
+    utm_sources: {
+        name: 'UTM Source',
+        url: 'utm-sources',
+        field: 'utm_sources',
+    },
+    utm_mediums: {
+        name: 'UTM Medium',
+        url: 'utm-mediums',
+        field: 'utm_mediums',
+    },
+    utm_campaigns: {
+        name: 'UTM Campaign',
+        url: 'utm-campaigns',
+        field: 'utm_campaigns',
+    },
+    utm_contents: {
+        name: 'UTM Content',
+        url: 'utm-contents',
+        field: 'utm_contents',
+    },
+    utm_terms: {
+        name: 'UTM Term',
+        url: 'utm-terms',
+        field: 'utm_terms',
     },
 };
 export const pages = {

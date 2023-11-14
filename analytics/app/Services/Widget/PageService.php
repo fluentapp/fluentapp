@@ -7,8 +7,7 @@ use Exception;
 
 class PageService extends WidgetBase
 {
-
-    protected const PAGE_CATEGORIES = ['top_pages', 'entry_pages', 'exit_pages'];
+    protected const PAGE_CATEGORIES = ['top_pages', 'entry_pages', 'exit_pages', 'exit_pages', 'exit_pages'];
     /**
      * Get the count of unique visitors based on the specified filter.
      *

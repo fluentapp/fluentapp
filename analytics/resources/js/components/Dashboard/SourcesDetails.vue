@@ -81,7 +81,6 @@ const fetchSourcesDetails = () => {
         )
         .then((response) => {
             loading.value = false;
-            console.log(response.data);
             sourcesList.value = response.data;
         })
         .catch((error) => {

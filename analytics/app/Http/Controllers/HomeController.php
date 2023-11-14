@@ -110,7 +110,92 @@ class HomeController extends Controller
     {
         $data = [];
         try {
-            $data = (new SourceService())->handle($request->all());
+            $data = (new SourceService())->handle(array_merge($request->all(), ['source_category' => 'all_sources']));
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+        return response()->json($data, 201);
+    }
+    
+    /**
+     * Display the utm sources data needed for utm sources Widget
+     *
+     * @param  \Illuminate\Http\Request $request The incoming request containing the filter_date parameter.
+     * @return \Illuminate\Http\JsonResponse The JSON response containing the data based on the filter.
+     */
+    public function utm_sources(Request $request, $domain)
+    {
+        $data = [];
+        try {
+            $data = (new SourceService())->handle(array_merge($request->all(), ['source_category' => 'utm_sources']));
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+        return response()->json($data, 201);
+    }
+    
+    /**
+     * Display the utm mediums data needed for utm mediums Widget
+     *
+     * @param  \Illuminate\Http\Request $request The incoming request containing the filter_date parameter.
+     * @return \Illuminate\Http\JsonResponse The JSON response containing the data based on the filter.
+     */
+    public function utm_mediums(Request $request, $domain)
+    {
+        $data = [];
+        try {
+            $data = (new SourceService())->handle(array_merge($request->all(), ['source_category' => 'utm_mediums']));
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+        return response()->json($data, 201);
+    }
+    
+    /**
+     * Display the utm campaigns data needed for utm campaigns Widget
+     *
+     * @param  \Illuminate\Http\Request $request The incoming request containing the filter_date parameter.
+     * @return \Illuminate\Http\JsonResponse The JSON response containing the data based on the filter.
+     */
+    public function utm_campaigns(Request $request, $domain)
+    {
+        $data = [];
+        try {
+            $data = (new SourceService())->handle(array_merge($request->all(), ['source_category' => 'utm_campaigns']));
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+        return response()->json($data, 201);
+    }
+    
+    /**
+     * Display the utm contents data needed for utm contents Widget
+     *
+     * @param  \Illuminate\Http\Request $request The incoming request containing the filter_date parameter.
+     * @return \Illuminate\Http\JsonResponse The JSON response containing the data based on the filter.
+     */
+    public function utm_contents(Request $request, $domain)
+    {
+        $data = [];
+        try {
+            $data = (new SourceService())->handle(array_merge($request->all(), ['source_category' => 'utm_contents']));
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+        return response()->json($data, 201);
+    }
+    
+    /**
+     * Display the utm terms data needed for utm terms Widget
+     *
+     * @param  \Illuminate\Http\Request $request The incoming request containing the filter_date parameter.
+     * @return \Illuminate\Http\JsonResponse The JSON response containing the data based on the filter.
+     */
+    public function utm_terms(Request $request, $domain)
+    {
+        $data = [];
+        try {
+            $data = (new SourceService())->handle(array_merge($request->all(), ['source_category' => 'utm_terms']));
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 400);
         }

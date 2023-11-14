@@ -36,6 +36,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{domain}/main-stats', [App\Http\Controllers\HomeController::class, 'mainStat'])->name('main-stats');
         Route::get('/{domain}/connected-visitors', [App\Http\Controllers\HomeController::class, 'currentVisitors'])->name('current-visitors');
         Route::get('/{domain}/sources', [App\Http\Controllers\HomeController::class, 'sources'])->name('sources');
+        Route::get('/{domain}/utm-sources', [App\Http\Controllers\HomeController::class, 'utm_sources'])->name('utm-sources');
+        Route::get('/{domain}/utm-mediums', [App\Http\Controllers\HomeController::class, 'utm_mediums'])->name('utm-mediums');
+        Route::get('/{domain}/utm-campaigns', [App\Http\Controllers\HomeController::class, 'utm_campaigns'])->name('utm-campaigns');
+        Route::get('/{domain}/utm-contents', [App\Http\Controllers\HomeController::class, 'utm_contents'])->name('utm-contents');
+        Route::get('/{domain}/utm-terms', [App\Http\Controllers\HomeController::class, 'utm_terms'])->name('utm-term');
         Route::get('/{domain}/countries', [App\Http\Controllers\HomeController::class, 'countries'])->name('countries');
         Route::get('/{domain}/cities', [App\Http\Controllers\HomeController::class, 'cities'])->name('cities');
         Route::get('/{domain}/regions', [App\Http\Controllers\HomeController::class, 'regions'])->name('regions');
