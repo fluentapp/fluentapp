@@ -15,7 +15,7 @@ import { ref, provide } from "vue";
 
 const props = defineProps(["domain", "withNotFound", "withExternal"]);
 const filter = ref({
-    period: "today",
+    period: "past_30_days",
     metric: "unique_visitors",
     filters: JSON.stringify([]),
     counter: 1,
