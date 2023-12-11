@@ -12,6 +12,7 @@ abstract class WidgetBase
         'today' => 'handleDateRangeFilter',
         'past_7_days' => 'handleDateRangeFilter',
         'past_30_days' => 'handleDateRangeFilter',
+        'custom_range' => 'handleDateRangeFilter',
         'real_time' => 'handleRealTimeFilter',
     ];
 
@@ -53,9 +54,8 @@ abstract class WidgetBase
                 ];
                 break;
             case 'custom_range':
-                $fromDateTime = Carbon::createFromFormat('Y-m-d H:i:s', $filters['from_date'], $siteTimezone);
-                $toDateTime = Carbon::createFromFormat('Y-m-d H:i:s', $filters['to_date'], $siteTimezone);
-
+                $fromDateTime = Carbon::createFromFormat('Y-m-d', $filters['from_date'], $siteTimezone);
+                $toDateTime = Carbon::createFromFormat('Y-m-d', $filters['to_date'], $siteTimezone);
                 return [
                     'from_date' => $fromDateTime->copy()->startOfDay()->addMinutes($siteTimezoneOffsetToMinutes),
                     'to_date' => $toDateTime->copy()->endOfDay()->addMinutes($siteTimezoneOffsetToMinutes)

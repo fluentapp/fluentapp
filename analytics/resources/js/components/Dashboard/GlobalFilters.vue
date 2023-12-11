@@ -79,6 +79,21 @@
                                 />
                             </div>
                         </div>
+                        <div
+                            v-if="
+                                selectedFilter === 'custom' ||
+                                (selectedFilter === 'custom_range' &&
+                                    !showCalendar)
+                            "
+                            class="field"
+                        >
+                            <Button
+                                :label="dateLabel"
+                                size="small"
+                                @click="showCalendar = true"
+                                text
+                            />
+                        </div>
                         <div class="field col">
                             <Dropdown
                                 v-model="selectedFilter"
@@ -104,14 +119,20 @@
                             />
                         </div>
                         <div
-                            v-if="selectedFilter === 'custom' && !showCalendar"
-                            class="field"
+                            v-if="
+                                selectedFilter === 'custom_range' &&
+                                showCalendar
+                            "
+                            class="field col"
                         >
-                            <Button
-                                :label="customDate"
+                            <Calendar
+                                v-model="customRangeDates"
+                                selectionMode="range"
+                                :manualInput="false"
+                                class="custom-date-calendar"
+                                inline
+                                @date-select="handleCustomRangeChange"
                                 size="small"
-                                @click="showCalendar = true"
-                                text
                             />
                         </div>
                     </div>
@@ -137,7 +158,9 @@ const selectedFilter = ref(filter.value.period);
 const currentVisitors = ref(0);
 const lastUpdatedCounter = ref(0);
 const customDate = ref(new Date());
+const customRangeDates = ref();
 const showCalendar = ref(false);
+const dateLabel = ref("");
 
 const dateFilters = ref([
     { name: "Today", type: "today" },
@@ -145,10 +168,10 @@ const dateFilters = ref([
     { name: "Last 7 days", type: "past_7_days" },
     { name: "Last 30 days", type: "past_30_days" },
     { name: "Custom Date", type: "custom" },
+    { name: "Custom Range", type: "custom_range" },
 ]);
-
 const handleFilterDateChange = (event) => {
-    if (event.value === "custom") {
+    if (["custom", "custom_range"].includes(event.value)) {
         showCalendar.value = true;
     } else {
         showCalendar.value = false;
@@ -158,10 +181,28 @@ const handleFilterDateChange = (event) => {
 
 const handleCustomDateSelect = (event) => {
     filter.value.period = "custom";
+    customRangeDates.value = null;
     customDate.value = moment(event).format("YYYY-MM-DD");
     filter.value.date = moment(event).format("YYYY-MM-DD");
+    dateLabel.value = customDate.value;
     showCalendar.value = false;
 };
+
+const handleCustomRangeChange = (event) => {
+    if (customRangeDates.value[0] && customRangeDates.value[1]) {
+        customDate.value = null;
+        filter.value.period = "custom_range";
+        filter.value.from_date = moment(customRangeDates.value[0]).format(
+            "YYYY-MM-DD"
+        );
+        filter.value.to_date = moment(customRangeDates.value[1]).format(
+            "YYYY-MM-DD"
+        );
+        dateLabel.value = filter.value.from_date + " - " + filter.value.to_date;
+        showCalendar.value = false;
+    }
+};
+
 // Call the function to fetch and update the chart initially
 onMounted(() => {
     fetchRealTimeData();
@@ -223,7 +264,7 @@ const closePopup = () => {
     right: 0;
 }
 .p-dropdown-items-wrapper {
-    max-height: 250px !important;
+    max-height: 2800px !important;
 }
 .button-container {
     display: inline-block;
