@@ -61,7 +61,7 @@ export const devices = {
 };
 export const sources = {
     sources: {
-        name: 'Top Sources',
+        name: 'All Sources',
         url: 'sources',
         field: 'all_sources',
     },

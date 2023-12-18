@@ -5,26 +5,15 @@
                 <span class="text-capitalize fw-bold">
                     {{ sources[sourceCategory].name }}
                 </span>
-                <ul class="list-inline float-end m-0">
-                    <li
-                        class="list-inline-item"
-                        v-for="(value, key) in sources"
-                        :key="key"
-                    >
-                        <Button
-                            :label="value.name"
-                            size="small"
-                            style="font-size: 0.8rem"
-                            :class="{
-                                'fw-bold text-decoration-underline':
-                                    sourceCategory == key,
-                            }"
-                            class="p-0"
-                            link
-                            @click="setSourceCategory(key)"
-                        />
-                    </li>
-                </ul>
+                <Dropdown
+                    v-model="sourceCategory"
+                    :options="Object.values(sources)"
+                    optionLabel="name"
+                    :placeholder="sources[sourceCategory].name"
+                    class="w-full md:w-14rem float-end p-0 m-0 sources-dropdown"
+                    @change="setSourceCategory"
+                >
+                </Dropdown>
             </div>
             <div class="card-body">
                 <Loader :active="loading" style="margin-top: 25%"></Loader>
@@ -137,10 +126,10 @@ const updateSourcesWidget = () => {
         });
 };
 
-const setSourceCategory = (type) => {
-    if (checkValueInKeys(type, sources)) {
-        sourceCategory.value = type;
-        updateSourcesWidget(type);
+const setSourceCategory = (event) => {
+    if (checkValueInKeys(event.value.field, sources)) {
+        sourceCategory.value = event.value.field;
+        updateSourcesWidget(event.value.field);
     }
 };
 
@@ -158,3 +147,22 @@ const closePopup = () => {
     isShowDetails.value = false;
 };
 </script>
+<style>
+.sources-dropdown {
+    border: 0;
+}
+.sources-dropdown .p-inputtext {
+    padding: 0;
+    text-align: end;
+}
+.sources-dropdown .p-dropdown-label.p-placeholder {
+    color: #327bff;
+    text-decoration: underline;
+    font-weight: bold;
+    font-size: 0.875rem;
+}
+.p-dropdown:not(.p-disabled).p-focus {
+    box-shadow: 0;
+    border: 0;
+}
+</style>
