@@ -5,7 +5,7 @@ namespace App\Services\Widget;
 use App\Models\Visitor;
 use Carbon\Carbon;
 use Exception;
-
+use Carbon\CarbonPeriod;
 class VisitorService extends WidgetBase
 {
 
@@ -99,10 +99,8 @@ class VisitorService extends WidgetBase
             $dates = $this->prepareDateFilter($filterData);
             $visitors = Visitor::getVisitorsByDateRange($dates['from_date'], $dates['to_date'], $filterData);
             $siteTimezone = $filterData['site_timezone'];
-            $now = Carbon::now($siteTimezone);
-            $days = $filterData['period'] === 'past_30_days' ? 30 : 6;
-            for ($day = $days; $day >= 0; $day--) {
-                $date = $now->copy()->subDays($day);
+            $period = CarbonPeriod::create($dates['from_date'], $dates['to_date']);
+            foreach ($period as $date) {
                 $chartData[] = $visitors[$date->format('Y-m-d')] ?? 0;
                 $dateLabels[] = $date->format('M d'); // ("Jul 30")
             }
