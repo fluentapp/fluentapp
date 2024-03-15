@@ -10,6 +10,7 @@ class Device extends ModelsEvent
     /**
      * Get the Device order by visitors for range of dates.
      *
+     * @param string $deviceCategory The from device category searching for (browser, OS, size )
      * @param string $fromDate The from date in 'Y-m-d' format.
      * @param string $toDate The to date in 'Y-m-d' format.
      * @param array $filters The filters for which to retrieve count
@@ -31,6 +32,7 @@ class Device extends ModelsEvent
     /**
      * Get the Device order by visitors real time.
      *
+     * @param string $deviceCategory The from device category searching for (browser, OS, size )
      * @param int $sec The previous seconds which retrieve the total visitors per Device
      * @param array $filters The filters for which to retrieve count
      * @return array The count of visitors by Device.

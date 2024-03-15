@@ -7,7 +7,7 @@ use Exception;
 
 class SourceService extends WidgetBase
 {
-
+    protected const SOURCE_CATEGORIES = ['all_sources', 'utm_sources', 'utm_mediums', 'utm_campaigns', 'utm_contents', 'utm_terms'];
     /**
      * Get the count of unique visitors based on the specified filter.
      *
@@ -23,7 +23,7 @@ class SourceService extends WidgetBase
             $filterDate = $filterData['period'];
             $method = $this->predefinedPeriodFilters[$filterDate] ?? null;
 
-            if ($method && method_exists($this, $method)) {
+            if ($method && method_exists($this, $method) && in_array($filterData['source_category'] ?? '', self::SOURCE_CATEGORIES)) {
                 return $this->$method($filterData);
             } else
                 throw new Exception('Invalid Filter');
@@ -36,7 +36,8 @@ class SourceService extends WidgetBase
     {
         try {
             $dates = $this->prepareDateFilter($filterData);
-            return Source::getSourcesVisitorsByDateRange($dates['from_date'], $dates['to_date'], $filterData);
+            $sourceCategory = $filterData['source_category'];
+            return Source::getSourcesVisitorsByDateRange($sourceCategory, $dates['from_date'], $dates['to_date'], $filterData);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
@@ -46,7 +47,9 @@ class SourceService extends WidgetBase
     {
         try {
             $secs = $this->prepareDateFilter($filterData)['sec'];
-            return Source::getSourcesVisitorsPrevSec($secs, $filterData);
+            $sourceCategory = $filterData['source_category'];
+            unset($filterData['source_category']);
+            return Source::getSourcesVisitorsPrevSec($sourceCategory, $secs, $filterData);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }

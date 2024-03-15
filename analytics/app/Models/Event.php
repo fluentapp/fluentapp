@@ -15,9 +15,12 @@ class Event extends Model
         'deviceFields' => ['os' => 'os', 'browsers' => 'browser', 'sizes' => 'device_type'],
         'locationFields' => ['countries' => 'country', 'cities' => 'city', 'regions' => 'state'],
         'pageFields' => ['entry_pages' => 'entry_page', 'exit_pages' => 'exit_page', 'page' => 'page'],
-        'sourceFields' => ['sources' => 'referrer_domain'],
+        'sourceFields' => [
+            'all_sources' => 'referrer_domain', 'utm_sources' => 'utm_source',
+            'utm_mediums' => 'utm_medium', 'utm_campaigns' => 'utm_campaign',
+            'utm_contents' => 'utm_content', 'utm_terms' => 'utm_term'
+        ],
     ];
-
 
     /**
      * Get the pageviews for the Event.

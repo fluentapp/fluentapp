@@ -43,6 +43,11 @@ CREATE TABLE `events` (
   `site_id` bigint unsigned NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `utm_source` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `utm_medium` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `utm_campaign` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `utm_content` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `utm_term` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `events_site_id_foreign` (`site_id`),
   CONSTRAINT `events_site_id_foreign` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`)
@@ -122,7 +127,7 @@ CREATE TABLE `personal_access_tokens` (
 DROP TABLE IF EXISTS `site_settings`;
 CREATE TABLE `site_settings` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `page_not_found_enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `page_not_found_enabled` tinyint(1) NOT NULL DEFAULT '0',
   `page_not_found_titles` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `external_tracking_enabled` tinyint(1) NOT NULL DEFAULT '0',
   `site_id` bigint unsigned NOT NULL,
@@ -177,4 +182,4 @@ CREATE TABLE `users_sites` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
--- 2023-09-25 12:20:36
+-- 2023-11-07 19:55:10

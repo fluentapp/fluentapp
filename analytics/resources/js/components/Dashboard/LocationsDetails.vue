@@ -85,7 +85,6 @@ const fetchLocationsDetails = () => {
         )
         .then((response) => {
             loading.value = false;
-            console.log(response.data);
             locationsList.value = response.data;
         })
         .catch((error) => {

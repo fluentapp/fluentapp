@@ -114,72 +114,82 @@ class EventCreatorActionTest extends TestCase
         $this->assertJsonContentType($response);
     }
 
-    //    public function testCreateEventValidation(): void
-    //    {
-    //        $request = $this->createJsonRequest(
-    //            'POST',
-    //            '/api/customers',
-    //            [
-    //                'number' => '',
-    //                'name' => '',
-    //                'street' => '',
-    //                'city' => '',
-    //                'country' => '',
-    //                'postal_code' => '',
-    //                'email' => 'mail.example.com',
-    //            ]
-    //        );
-    //
-    //        $response = $this->app->handle($request);
-    //
-    //        // Check response
-    //        $this->assertSame(StatusCodeInterface::STATUS_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-    //        $this->assertJsonContentType($response);
-    //
-    //        $expected = [
-    //            'error' => [
-    //                'message' => 'Please check your input',
-    //                'details' => [
-    //                    [
-    //                        'message' => 'This value should not be blank.',
-    //                        'field' => '[number]',
-    //                    ],
-    //                    [
-    //                        'message' => 'This value should be positive.',
-    //                        'field' => '[number]',
-    //                    ],
-    //                    [
-    //                        'message' => 'This value should not be blank.',
-    //                        'field' => '[name]',
-    //                    ],
-    //                    [
-    //                        'message' => 'This value should not be blank.',
-    //                        'field' => '[street]',
-    //                    ],
-    //                    [
-    //                        'message' => 'This value should not be blank.',
-    //                        'field' => '[postal_code]',
-    //                    ],
-    //                    [
-    //                        'message' => 'This value should not be blank.',
-    //                        'field' => '[city]',
-    //                    ],
-    //                    [
-    //                        'message' => 'This value should not be blank.',
-    //                        'field' => '[country]',
-    //                    ],
-    //                    [
-    //                        'message' => 'This value should have exactly 2 characters.',
-    //                        'field' => '[country]',
-    //                    ],
-    //                    [
-    //                        'message' => 'This value is not a valid email address.',
-    //                        'field' => '[email]',
-    //                    ],
-    //                ],
-    //            ],
-    //        ];
-    //
-    //        $this->assertJsonData($expected, $response);
-    //    }
+
+    public function testCreateEventInvalidUtm(): void
+    {
+        $this->insertFixtures([
+            DailyHashFixture::class,
+            UsersFixture::class,
+            SiteFixture::class,
+            UserSitesFixture::class
+        ]);
+        $request = $this->createJsonRequest(
+            'POST',
+            '/event',
+            [
+                    'domain' => "moe.com",
+                    'event' => "pageview",
+                    'page' => 'http://localhost:8080/tracker/test/sub/page.html',
+                    'referrer' => 'http://localhost:8080/tracker/test/root-page-2.html',
+                    'utm_source' => 'as+@$sdf&*&*(&()*&&(*'
+                ]
+        );
+
+        $response = $this->app->handle($request);
+
+        // Check response
+        $this->assertSame(StatusCodeInterface::STATUS_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+
+        $expected = [
+            'error' => [
+                'message' => 'Please check your input',
+                'code' => 422,
+                'details' => [
+                    [
+                        'message' => 'The utm_source is not valid',
+                        'field' => 'utm_source'
+                    ]
+                ]
+            ]
+        ];
+
+
+        $this->assertJsonData($expected, $response);
+
+        $this->assertJsonContentType($response);
+    }
+
+
+    public function testCreateEventValidUtm(): void
+    {
+        $this->insertFixtures([
+            DailyHashFixture::class,
+            UsersFixture::class,
+            SiteFixture::class,
+            UserSitesFixture::class
+        ]);
+        $request = $this->createJsonRequest(
+            'POST',
+            '/event',
+            [
+                    'domain' => "moe.com",
+                    'event' => "pageview",
+                    'page' => 'http://localhost:8080/tracker/test/sub/page.html',
+                    'referrer' => 'http://localhost:8080/tracker/test/root-page-2.html',
+                    'utm_source' => 'google',
+                    'utm_campaign' => 'end-of-year',
+                    'utm_term' => 'click_here',
+                    'utm_content' => 'good_offer',
+                    'utm_medium' => 'email'
+                ]
+        );
+
+        $response = $this->app->handle($request);
+
+        // Check response
+        $this->assertSame(StatusCodeInterface::STATUS_CREATED, $response->getStatusCode());
+
+        $this->assertJsonContentType($response);
+    }
+
 }

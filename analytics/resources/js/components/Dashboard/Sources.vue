@@ -5,20 +5,15 @@
                 <span class="text-capitalize fw-bold">
                     {{ sources[sourceCategory].name }}
                 </span>
-                <ul class="list-inline float-end m-0 d-none">
-                    <li
-                        class="list-inline-item"
-                        v-for="(value, key) in sources"
-                        :key="key"
-                    >
-                        <Button
-                            :label="value.name"
-                            size="small"
-                            class="p-0"
-                            link
-                        />
-                    </li>
-                </ul>
+                <Dropdown
+                    v-model="sourceCategory"
+                    :options="Object.values(sources)"
+                    optionLabel="name"
+                    :placeholder="sources[sourceCategory].name"
+                    class="w-full md:w-14rem float-end p-0 m-0 sources-dropdown"
+                    @change="setSourceCategory"
+                >
+                </Dropdown>
             </div>
             <div class="card-body">
                 <Loader :active="loading" style="margin-top: 25%"></Loader>
@@ -38,10 +33,16 @@
                                     class="link-dark link-underline-opacity-0 link-underline-opacity-75-hover"
                                     href="#"
                                     @click.prevent="
-                                        addFilter('sources', source.sources)
+                                        addFilter(
+                                            sourceCategory,
+                                            source[sourceCategory]
+                                        )
                                     "
                                 >
-                                    {{ source.sources ?? "Direct / None" }}
+                                    {{
+                                        source[sourceCategory] ??
+                                        "Direct / None"
+                                    }}
                                 </a>
                             </td>
                             <td class="text-end">
@@ -74,6 +75,7 @@
 import { ref, inject, watch, onMounted } from "vue";
 import {
     kFormatter,
+    checkValueInKeys,
     prepareQueryString,
     appendToFilters,
 } from "./../../helpers";
@@ -124,12 +126,20 @@ const updateSourcesWidget = () => {
         });
 };
 
+const setSourceCategory = (event) => {
+    if (checkValueInKeys(event.value.field, sources)) {
+        sourceCategory.value = event.value.field;
+        updateSourcesWidget(event.value.field);
+    }
+};
+
 const addFilter = (filterCategory, filterValue) => {
     const filtersObject = JSON.parse(filter.value.filters);
     filter.value.filters = JSON.stringify(
         appendToFilters(filtersObject, filterCategory, filterValue, true)
     );
 };
+
 const showDetailsPopup = () => {
     isShowDetails.value = true;
 };
@@ -137,3 +147,22 @@ const closePopup = () => {
     isShowDetails.value = false;
 };
 </script>
+<style>
+.sources-dropdown {
+    border: 0;
+}
+.sources-dropdown .p-inputtext {
+    padding: 0;
+    text-align: end;
+}
+.sources-dropdown .p-dropdown-label.p-placeholder {
+    color: #327bff;
+    text-decoration: underline;
+    font-weight: bold;
+    font-size: 0.875rem;
+}
+.p-dropdown:not(.p-disabled).p-focus {
+    box-shadow: 0;
+    border: 0;
+}
+</style>

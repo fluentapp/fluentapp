@@ -77,7 +77,6 @@ const fetchNotFoundDetails = () => {
         )
         .then((response) => {
             loading.value = false;
-            console.log(response.data);
             notFoundList.value = response.data;
         })
         .catch((error) => {

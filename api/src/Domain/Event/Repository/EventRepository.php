@@ -40,6 +40,11 @@ class EventRepository
             'updated_at' => $data['updated_at'],
             'referrer' => $data['referrer'],
             'site_id' => $data['site_id'],
+            'utm_source' => $data['utm_source'] ?? '',
+            'utm_medium' => $data['utm_medium'] ?? '',
+            'utm_campaign' => $data['utm_campaign'] ?? '',
+            'utm_content' => $data['utm_content'] ?? '',
+            'utm_term' => $data['utm_term'] ?? '',
             'referrer_domain' => @$data['referrer_domain'] // dirty, should be handled in the domain
         ])->execute();
 

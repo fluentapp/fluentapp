@@ -10,6 +10,7 @@ class Page extends ModelsEvent
     /**
      * Get the Page order by visitors for range of dates.
      *
+     * @param string $pageCategory The from page category searching for (all, entry, exit )
      * @param string $fromDate The from date in 'Y-m-d' format.
      * @param string $toDate The to date in 'Y-m-d' format.
      * @param array $filters The filters for which to retrieve count
@@ -31,6 +32,7 @@ class Page extends ModelsEvent
     /**
      * Get the Page order by visitors real time.
      *
+     * @param string $pageCategory The from page category searching for (all, entry, exit )
      * @param int $sec The previous seconds which retrieve the total visitors per Page
      * @param array $filters The filters for which to retrieve count
      * @return array The count of visitors by Page.
